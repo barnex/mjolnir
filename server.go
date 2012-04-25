@@ -20,11 +20,6 @@ func NewServer() *Server {
 	return p
 }
 
-// Wraps the player in an API to expose methods available to the user.
-//func (p *Server) API() API {
-//return API{p}
-//}
-
 // Wraps the player in an RPC to expose methods available to the RPC server.
 func (p *Server) RPC() RPC {
 	return RPC{p}

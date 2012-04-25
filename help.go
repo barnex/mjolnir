@@ -3,8 +3,6 @@ package main
 // This file implements the "help" command.
 
 import (
-	"reflect"
-	"strings"
 )
 
 // Store help for commands here
@@ -15,15 +13,11 @@ func init() {
 	api["help"] = (*Server).Help
 }
 
-// report all methods on API, using reflection
 func (player *Server) Help() (resp, err string) {
 	resp = `usage: ` + PROG + ` <command> [<args>]
 
 The available commands are:`
-	p := reflect.ValueOf(api)
-	for i := 0; i < p.Type().NumMethod(); i++ {
-		m := p.Type().Method(i)
-		name := strings.ToLower(m.Name)
+	for name, _ := range api{
 		resp += "\n   " + fill(name) + " " + help[name]
 	}
 	return
