@@ -1,17 +1,35 @@
 package midgard
 
+
 // This file implements the Remote Procedure Call between
 // the daemon and client front-end
+// The client forks a daemon 
+// if none is yet running and sends RPC calls to it.
 
 import (
 	"errors"
 	"fmt"
 	"reflect"
+	"net"
+	"net/http"
+	"net/rpc"
 )
 
-// Aliased type to define RPC methods on.
+// Start serving RPC calls from client instances.
+func DaemonMain() {
+	rpc.Register(&RPC{})
+	rpc.HandleHTTP()
+	conn, err := net.Listen("tcp", port)
+	if err != nil {
+		Err("listen error:", err)
+	}
+	Debug("Listening on port " + port)
+	http.Serve(conn, nil)
+	//TODO: log errors.
+}
+
+// Dummy type to define RPC methods on
 type RPC struct {
-	server *Server
 }
 
 // RPC-exported function used for normal operation mode.

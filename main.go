@@ -27,10 +27,10 @@ func main() {
 		return
 	}
 
-//	if *flag_daemon {
-//		NewServer().Daemon()
-//		return
-//	}
+	if *flag_daemon {
+		NewServer().Daemon()
+		return
+	}
 
 	midgard.MainClient(flag.Args())
 }

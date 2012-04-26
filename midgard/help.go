@@ -2,22 +2,21 @@ package midgard
 
 // This file implements the "help" command.
 
-import (
-)
+import ()
 
 // Store help for commands here
 var help map[string]string = make(map[string]string)
 
 func init() {
 	help["help"] = `Display this help message`
-	api["help"] = (*Server).Help
+	Api["help"] = (*Server).Help
 }
 
-func (player *Server) Help() (resp, err string) {
+func Help() (resp, err string) {
 	resp = `usage: ` + Prog + ` <command> [<args>]
 
 The available commands are:`
-	for name, _ := range api{
+	for name, _ := range Api {
 		resp += "\n   " + fill(name) + " " + help[name]
 	}
 	return

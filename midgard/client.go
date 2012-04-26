@@ -14,9 +14,6 @@ import (
 	"time"
 )
 
-// RPC port
-const port = ":2528"
-
 // Main loop for "client" mode (the normal mode).
 // Simply passes the arguments to the daemon and
 // displays the result.
@@ -43,7 +40,7 @@ func cleanup(str string) string {
 // Starts the daemon if he's not yet running.
 func dialDaemon() *rpc.Client {
 	// try to call the daemon
-	client, err := rpc.DialHTTP("tcp", "localhost"+port)
+	client, err := rpc.DialHTTP("tcp", "localhost"+Port)
 
 	// if daemon does not seem to be running, start him.
 	const SLEEP = 10e6 // nanoseconds
@@ -56,7 +53,7 @@ func dialDaemon() *rpc.Client {
 	// give him some time to come up.
 	trials := 0
 	for err != nil && trials < 10 {
-		client, err = rpc.DialHTTP("tcp", "localhost"+port)
+		client, err = rpc.DialHTTP("tcp", "localhost"+Port)
 		time.Sleep(SLEEP)
 		trials++
 	}
