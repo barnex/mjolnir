@@ -1,4 +1,4 @@
-package main
+package midgard
 
 // This file implements log and debug functions
 

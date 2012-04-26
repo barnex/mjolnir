@@ -1,4 +1,4 @@
-package main
+package midgard
 
 // This file implements the client main function.
 // Invoked whenever the user types the command. 

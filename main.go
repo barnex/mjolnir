@@ -3,6 +3,7 @@ package main
 // This file implements the main function
 
 import (
+	"mjolnir/midgard"
 	"flag"
 	"fmt"
 	"runtime"
@@ -26,10 +27,10 @@ func main() {
 		return
 	}
 
-	if *flag_daemon {
-		NewServer().Daemon()
-		return
-	}
+//	if *flag_daemon {
+//		NewServer().Daemon()
+//		return
+//	}
 
-	MainClient(flag.Args())
+	midgard.MainClient(flag.Args())
 }

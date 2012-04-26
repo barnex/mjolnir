@@ -1,4 +1,4 @@
-package main
+package midgard
 
 // This file implements the "help" command.
 
@@ -14,7 +14,7 @@ func init() {
 }
 
 func (player *Server) Help() (resp, err string) {
-	resp = `usage: ` + PROG + ` <command> [<args>]
+	resp = `usage: ` + Prog + ` <command> [<args>]
 
 The available commands are:`
 	for name, _ := range api{

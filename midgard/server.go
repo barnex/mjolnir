@@ -1,4 +1,4 @@
-package main
+package midgard
 
 // This file implements the queue state.
 // The player communicates over RPC (Remote Procedure Call)

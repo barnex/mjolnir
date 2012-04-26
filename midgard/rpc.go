@@ -1,4 +1,4 @@
-package main
+package midgard
 
 // This file implements the Remote Procedure Call between
 // the daemon and client front-end
@@ -48,7 +48,7 @@ func (rpc RPC) Call(args []string, resp *string) (err error) {
 	// lookup function in API map
 	f := api[cmd]
 	if f == nil {
-		err = errors.New(PROG + ": '" + cmd + "' is not a " + PROG + " command. See " + PROG + " help.")
+		err = errors.New(Prog + ": '" + cmd + "' is not a " + Prog + " command. See " + Prog + " help.")
 		return
 	}
 
