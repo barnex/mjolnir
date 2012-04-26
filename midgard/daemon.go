@@ -1,18 +1,19 @@
 package midgard
 
-
 // This file implements the Remote Procedure Call between
 // the daemon and client front-end
 // The client forks a daemon 
 // if none is yet running and sends RPC calls to it.
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-	"reflect"
+	"io"
 	"net"
 	"net/http"
 	"net/rpc"
+	"reflect"
 )
 
 // Start serving RPC calls from client instances.
@@ -44,8 +45,8 @@ func (rpc RPC) Call(args []string, resp *string) (err error) {
 		args = []string{"help"}
 	}
 
-	cmd := args[0]  // first arg is command (e.g.: "play")
-	args = args[1:] // rest are arguments (e.g.: "jazz")
+	cmd := args[0]  // first arg is command
+	args = args[1:] // rest are arguments
 
 	// lookup function in API map
 	f := Api[cmd]
@@ -55,32 +56,30 @@ func (rpc RPC) Call(args []string, resp *string) (err error) {
 	}
 
 	// call function
-	errstr := ""
+	var out_ bytes.Buffer
+	out := &out_
 	switch fnc := f.(type) {
 	default:
-		panic(reflect.TypeOf(f))
-	case func() (string, string):
+		panic(errors.New(fmt.Sprint("midgard: unsupported func type: ", reflect.TypeOf(f))))
+	case func(io.Writer) error:
 		if len(args) > 0 {
-			errstr = fmt.Sprint(cmd, ": does not take arugments")
+			err = NewError(cmd, ": does not take arugments")
 		} else {
-			*resp, errstr = fnc()
+			err = fnc(out)
 		}
-	case func(string) (string, string):
+	case func(io.Writer, string) error:
 		if len(args) != 1 {
-			errstr = fmt.Sprint(cmd, ": needs one argument")
+			err = NewError(cmd, ": needs one argument")
 		} else {
-			*resp, errstr = fnc(args[0])
+			err = fnc(out, args[0])
 		}
-	case func([]string) (string, string):
+	case func(io.Writer, []string) error:
 		if len(args) == 0 {
-			errstr = fmt.Sprint(cmd, ": needs argument")
+			err = NewError(cmd, ": needs argument")
 		} else {
-			*resp, errstr = fnc(args)
+			err = fnc(out, args)
 		}
 	}
-	if errstr != "" {
-		err = errors.New(errstr)
-	}
+	*resp = string(out.Bytes())
 	return
 }
-

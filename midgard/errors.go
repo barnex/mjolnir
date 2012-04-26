@@ -3,6 +3,7 @@ package midgard
 // This file implements log and debug functions
 
 import (
+	"errors"
 	"fmt"
 	"os"
 )
@@ -24,4 +25,9 @@ func Check(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// Like errors.New but takes ...interface{} argument.
+func NewError(msg ...interface{}) error {
+	return errors.New(fmt.Sprint(msg...))
 }
