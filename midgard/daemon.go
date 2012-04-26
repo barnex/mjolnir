@@ -16,14 +16,14 @@ import (
 )
 
 // Start serving RPC calls from client instances.
-func DaemonMain() {
+func MainDaemon() {
 	rpc.Register(&RPC{})
 	rpc.HandleHTTP()
-	conn, err := net.Listen("tcp", port)
+	conn, err := net.Listen("tcp", Port)
 	if err != nil {
 		Err("listen error:", err)
 	}
-	Debug("Listening on port " + port)
+	Debug("Listening on port " + Port)
 	http.Serve(conn, nil)
 	//TODO: log errors.
 }

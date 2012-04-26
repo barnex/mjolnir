@@ -28,7 +28,7 @@ func main() {
 	}
 
 	if *flag_daemon {
-		NewServer().Daemon()
+		midgard.MainDaemon()
 		return
 	}
 

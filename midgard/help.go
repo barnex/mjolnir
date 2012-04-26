@@ -9,7 +9,7 @@ var help map[string]string = make(map[string]string)
 
 func init() {
 	help["help"] = `Display this help message`
-	Api["help"] = (*Server).Help
+	Api["help"] = Help
 }
 
 func Help() (resp, err string) {
