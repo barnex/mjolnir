@@ -1,13 +1,13 @@
 package helheim
 
 import (
-	"mjolnir/midgard"
 	"fmt"
 	"io"
+	"mjolnir/midgard"
 	"runtime"
 )
 
-func init(){
+func init() {
 	midgard.Api["version"] = Version
 	midgard.Help["version"] = "Print version info"
 }

@@ -51,7 +51,7 @@ func (rpc RPC) Call(args []string, resp *string) (err error) {
 	// lookup function in API map
 	f := Api[cmd]
 	if f == nil {
-		err = errors.New(Prog + ": '" + cmd + "' is not a " + Prog + " command. See " + Prog + " help.")
+		err = errors.New(ProgName + ": '" + cmd + "' is not a " + ProgName + " command. See " + ProgName + " help.")
 		return
 	}
 

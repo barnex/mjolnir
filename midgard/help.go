@@ -13,10 +13,10 @@ func init() {
 }
 
 func PrintHelp(out io.Writer) error {
-	fmt.Fprintln(out, `usage: `+Prog+` <command> [<args>]`)
+	fmt.Fprintln(out, `usage: `, ProgName, ` <command> [<args>]`)
 	fmt.Fprint(out, `The available commands are:`)
 	for name, _ := range Api {
-		fmt.Fprint(out, "\n   ",fill(name)," ",Help[name])
+		fmt.Fprint(out, "\n   ", fill(name), " ", Help[name])
 	}
 	return nil
 }

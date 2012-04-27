@@ -15,14 +15,14 @@ var (
 	flag_version *bool = flag.Bool("v", false, "show version and exit")
 )
 
-const PROG = "mjolnir"
 
 func main() {
 	flag.Parse()
 
+	midgard.ProgName = "mjolnir"
+
 	if *flag_daemon {
 		helheim.MainDaemon()
-		midgard.MainDaemon()
 		return
 	}
 

@@ -9,6 +9,7 @@ var (
 	Lock sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
 )
 
-func MainDaemon(){
+func MainDaemon() {
 	midgard.Lock = &Lock
+	midgard.MainDaemon()
 }
