@@ -21,10 +21,12 @@ func main() {
 
 	midgard.ProgName = "mjolnir"
 
+	// Daemon mode: enter the realm of the daemons
 	if *flag_daemon {
 		helheim.MainDaemon()
 		return
 	}
 
+	// Client mode: stay in the realm of the humans
 	midgard.MainClient(flag.Args())
 }

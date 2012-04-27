@@ -39,6 +39,12 @@ type RPC struct {
 // Here, run-time reflection is used to match the user command
 // to a method on the API type.
 func (rpc RPC) Call(args []string, resp *string) (err error) {
+	
+	Debug("midgard: aquire lock")
+	Lock.Lock()
+	defer Lock.Unlock()
+	defer Debug("midgard: release lock")
+
 	Debug("ServerRPC.Call", args)
 
 	if len(args) == 0 {
