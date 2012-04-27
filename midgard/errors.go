@@ -15,6 +15,7 @@ func Debug(msg ...interface{}) {
 
 // Print error message and exit.
 func Err(msg ...interface{}) {
+	panic(msg)
 	fmt.Fprintln(os.Stderr, msg...)
 	os.Exit(3)
 }

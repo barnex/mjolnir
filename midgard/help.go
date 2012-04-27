@@ -2,7 +2,10 @@ package midgard
 
 // This file implements the "help" command.
 
-import ()
+import (
+	"fmt"
+	"io"
+)
 
 // Store help for commands here
 var help map[string]string = make(map[string]string)
@@ -12,14 +15,13 @@ func init() {
 	Api["help"] = Help
 }
 
-func Help() (resp, err string) {
-	resp = `usage: ` + Prog + ` <command> [<args>]
-
-The available commands are:`
+func Help(out io.Writer) error {
+	fmt.Fprintln(out, `usage: `+Prog+` <command> [<args>]`)
+	fmt.Fprint(out, `The available commands are:`)
 	for name, _ := range Api {
-		resp += "\n   " + fill(name) + " " + help[name]
+		fmt.Fprint(out, "\n   "+fill(name)+" "+help[name])
 	}
-	return
+	return nil
 }
 
 // paste some spaces after the string for column alignment

@@ -1,24 +1,23 @@
 package main
 
-import(
+import (
 	cu "cuda/driver"
 )
 
-type NodeInfo struct{
+type NodeInfo struct {
 	HostName string
-	NDevice int
-	Devices []Device
+	NDevice  int
+	Devices  []Device
 }
 
-type Device struct{
-	Name string
+type Device struct {
+	Name     string
 	TotalMem int64
 }
 
-func main(){
+func main() {
 	var info NodeInfo
 	info.HostName = os.Hostname()
-	NDev := cu.DeviceGetCount()	
-	
-	
+	NDev := cu.DeviceGetCount()
+
 }

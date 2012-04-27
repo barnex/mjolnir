@@ -60,7 +60,7 @@ func (rpc RPC) Call(args []string, resp *string) (err error) {
 	out := &out_
 	switch fnc := f.(type) {
 	default:
-		panic(errors.New(fmt.Sprint("midgard: unsupported func type: ", reflect.TypeOf(f))))
+		panic(errors.New(fmt.Sprint("midgard: unsupported func type for ", cmd, " : ", reflect.TypeOf(f))))
 	case func(io.Writer) error:
 		if len(args) > 0 {
 			err = NewError(cmd, ": does not take arugments")

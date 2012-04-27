@@ -1,10 +1,13 @@
 all: mjolnir
 
 mjolnir: *.go
-	go tool 6g -o mjolnir.6 *.go
-	go tool 6l -o mjolnir mjolnir.6
+	go build -v
+	go install mjolnir/midgard
+	go install mjolnir/helheim
 	go install
 
 .PHONY: clean
 clean:
 	go clean
+	go clean helheim
+	go clean midgard
