@@ -11,5 +11,9 @@ var (
 
 func MainDaemon() {
 	midgard.Lock = &Lock
+
+	midgard.Api["version"] = Version
+	midgard.Help["version"] = "Print version info"
+
 	midgard.MainDaemon()
 }
