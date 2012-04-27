@@ -17,7 +17,7 @@ import (
 )
 
 // Start serving RPC calls from client instances.
-func MainDaemon() {
+func Listen() {
 	rpc.Register(&RPC{})
 	rpc.HandleHTTP()
 	conn, err := net.Listen("tcp", Port)
@@ -39,7 +39,7 @@ type RPC struct {
 // Here, run-time reflection is used to match the user command
 // to a method on the API type.
 func (rpc RPC) Call(args []string, resp *string) (err error) {
-	
+
 	Debug("midgard: aquire lock")
 	Lock.Lock()
 	defer Lock.Unlock()
@@ -67,6 +67,12 @@ func (rpc RPC) Call(args []string, resp *string) (err error) {
 	switch fnc := f.(type) {
 	default:
 		panic(errors.New(fmt.Sprint("midgard: unsupported func type for ", cmd, " : ", reflect.TypeOf(f))))
+	case func(string):
+		if len(args) != 0 {
+			err = NewError(cmd, ": needs one arugment")
+		} else {
+			fnc(args[0])
+		}
 	case func(io.Writer) error:
 		if len(args) > 0 {
 			err = NewError(cmd, ": does not take arugments")

@@ -6,14 +6,26 @@ import (
 )
 
 var (
-	Lock sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
+	lock sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
 )
 
 func MainDaemon() {
-	midgard.Lock = &Lock
+
+	Configure()
+	initMidgard()
+
+	go RunSched()
+
+	// Start listening for commands
+	midgard.Listen()
+}
+
+func initMidgard() {
+	midgard.Lock = &lock
 
 	midgard.Api["version"] = Version
 	midgard.Help["version"] = "Print version info"
 
-	midgard.MainDaemon()
+	midgard.Api["users"] = Users
+	midgard.Help["users"] = "Print group and user info"
 }
