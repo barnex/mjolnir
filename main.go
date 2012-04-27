@@ -21,8 +21,7 @@ func main() {
 	flag.Parse()
 
 	if *flag_daemon {
-		midgard.Lock = &helheim.Lock
-		midgard.Api["version"] = helheim.Version
+		helheim.MainDaemon()
 		midgard.MainDaemon()
 		return
 	}

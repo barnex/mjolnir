@@ -7,19 +7,16 @@ import (
 	"io"
 )
 
-// Store help for commands here
-var help map[string]string = make(map[string]string)
-
 func init() {
-	help["help"] = `Display this help message`
-	Api["help"] = Help
+	Help["help"] = `Display this help message`
+	Api["help"] = PrintHelp
 }
 
-func Help(out io.Writer) error {
+func PrintHelp(out io.Writer) error {
 	fmt.Fprintln(out, `usage: `+Prog+` <command> [<args>]`)
 	fmt.Fprint(out, `The available commands are:`)
 	for name, _ := range Api {
-		fmt.Fprint(out, "\n   "+fill(name)+" "+help[name])
+		fmt.Fprint(out, "\n   ",fill(name)," ",Help[name])
 	}
 	return nil
 }
