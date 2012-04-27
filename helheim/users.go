@@ -26,7 +26,7 @@ func (g *Group) AddUser(name string, share int) {
 	g.users = append(g.users, &User{name, share})
 }
 
-// API func
+// API func, prints user info.
 func Users(out io.Writer) error {
 	for _, gr := range groups {
 		fmt.Fprint(out, gr)
