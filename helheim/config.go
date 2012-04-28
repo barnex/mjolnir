@@ -5,4 +5,6 @@ func Configure() {
 	dynamat.AddUser("arne", 4)
 
 	AddGroup("eelab", 0)
+
+	AddNode("localhost")
 }

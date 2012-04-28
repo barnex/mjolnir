@@ -28,4 +28,7 @@ func initMidgard() {
 
 	midgard.Api["users"] = Users
 	midgard.Help["users"] = "Print group and user info"
+
+	midgard.Api["nodes"] = Nodes
+	midgard.Help["nodes"] = "Print node info"
 }

@@ -1,8 +1,8 @@
 package helheim
 
 var (
-	groups  []*Group
-	devices []*Device
+	groups []*Group
+	nodes  []*Node
 )
 
 // Run the scheduler. Infinite loop.
