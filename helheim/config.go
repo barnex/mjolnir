@@ -6,5 +6,5 @@ func Configure() {
 
 	AddGroup("eelab", 0)
 
-	AddNode("localhost")
+	AddNode([]string{"ssh", "localhost"})
 }
