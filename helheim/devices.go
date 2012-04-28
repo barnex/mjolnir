@@ -26,15 +26,12 @@ func AddNode(ssh []string) {
 }
 
 func(n*Node)Autoconf(){
-	n.Exec("hostname")
+	n.Exec("hostname") // TODO...
 }
 
 // Execute a command on the node
 func(n*Node)Exec(command string, args ...string) (output[]byte, err error){
-	Debug("exec", command, args)
-	Debug(args)
-	Debug(n.ssh[0], append(append(n.ssh[1:], command), args...))	
-	cmd := exec.Command(n.ssh[0], append(n.ssh[1:], args...)...)	
+	cmd := exec.Command(n.ssh[0], append(append(n.ssh[1:], command),args...)...)
 	Debug(cmd)
 	output, err = cmd.CombinedOutput()
 	Check(err)
