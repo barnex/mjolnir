@@ -1,16 +1,16 @@
 package helheim
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"os/exec"
-	"encoding/json"
 )
 
 // Compute node.
 type Node struct {
-	ssh []string
-	devices   []*Device
+	ssh     []string
+	devices []*Device
 }
 
 // Compute device.
@@ -20,28 +20,27 @@ type Device struct {
 	drain bool
 }
 
-
 func AddNode(ssh []string) {
 	node := &Node{ssh, []*Device{}}
 	nodes = append(nodes, node)
 	node.Autoconf()
 }
 
-func(n*Node)Autoconf(){
+func (n *Node) Autoconf() {
 	bytes, err := n.Exec("/home/arne/go/bin/muninn") //TODO
 	Check(err)
 	var info []DeviceInfo
 	json.Unmarshal(bytes, &info)
 	Debug("muninn says: ", info)
 	n.devices = make([]*Device, len(info))
-	for i := range(n.devices){
+	for i := range n.devices {
 		n.devices[i] = &Device{info[i], false, false}
 	}
 }
 
 // Execute a command on the node
-func(n*Node)Exec(command string, args ...string) (output[]byte, err error){
-	cmd := exec.Command(n.ssh[0], append(append(n.ssh[1:], command),args...)...)
+func (n *Node) Exec(command string, args ...string) (output []byte, err error) {
+	cmd := exec.Command(n.ssh[0], append(append(n.ssh[1:], command), args...)...)
 	Debug(cmd)
 	output, err = cmd.CombinedOutput()
 	Check(err)

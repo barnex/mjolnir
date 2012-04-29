@@ -1,13 +1,12 @@
 package main
 
 import (
-	. "mjolnir/helheim"
 	cu "cuda/driver"
 	"encoding/json"
 	"fmt"
+	. "mjolnir/helheim"
 	"os"
 )
-
 
 func main() {
 	/*defer func(){
@@ -20,7 +19,7 @@ func main() {
 	cu.Init(0)
 	NDev := cu.DeviceGetCount()
 	info := make([]DeviceInfo, NDev)
-	for i := range info{
+	for i := range info {
 		dev := cu.DeviceGet(i)
 		info[i].Name = dev.Name()
 	}

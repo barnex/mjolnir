@@ -15,7 +15,6 @@ var (
 	flag_version *bool = flag.Bool("v", false, "show version and exit")
 )
 
-
 func main() {
 	flag.Parse()
 
