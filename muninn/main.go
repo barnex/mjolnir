@@ -1,23 +1,25 @@
 package main
 
 import (
+	. "mjolnir/helheim"
 	cu "cuda/driver"
+	"encoding/json"
+	"fmt"
+	"os"
 )
 
-type NodeInfo struct {
-	HostName string
-	NDevice  int
-	Devices  []Device
-}
-
-type Device struct {
-	Name     string
-	TotalMem int64
-}
 
 func main() {
-	var info NodeInfo
-	info.HostName = os.Hostname()
+	cu.Init(0)
 	NDev := cu.DeviceGetCount()
-
+	info := make([]DeviceInfo, NDev)
+	for i := range info{
+		dev := cu.DeviceGet(i)
+		info[i].Name = dev.Name()
+	}
+	bytes, err := json.Marshal(info)
+	Check(err)
+	_, err2 := os.Stdout.Write(bytes)
+	fmt.Println()
+	Check(err2)
 }
