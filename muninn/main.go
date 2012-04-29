@@ -16,12 +16,13 @@ func main() {
 		}
 	}()
 	*/
+	var info NodeInfo
 	cu.Init(0)
 	NDev := cu.DeviceGetCount()
-	info := make([]DeviceInfo, NDev)
-	for i := range info {
+	info.Devices = make([]DeviceInfo, NDev)
+	for i := range info.Devices {
 		dev := cu.DeviceGet(i)
-		info[i].Name = dev.Name()
+		info.Devices[i].Name = dev.Name()
 	}
 	bytes, err := json.Marshal(info)
 	Check(err)

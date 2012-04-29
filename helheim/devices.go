@@ -15,7 +15,6 @@ type Node struct {
 
 // Compute device.
 type Device struct {
-	DeviceInfo
 	busy  bool
 	drain bool
 }
@@ -29,13 +28,14 @@ func AddNode(ssh []string) {
 func (n *Node) Autoconf() {
 	bytes, err := n.Exec("/home/arne/go/bin/muninn") //TODO
 	Check(err)
-	var info []DeviceInfo
-	json.Unmarshal(bytes, &info)
+	var info NodeInfo
+	err = json.Unmarshal(bytes, &info)
+	Check(err)
 	Debug("muninn says: ", info)
-	n.devices = make([]*Device, len(info))
-	for i := range n.devices {
-		n.devices[i] = &Device{info[i], false, false}
-	}
+//	n.devices = make([]*Device, len(info))
+//	for i := range n.devices {
+//		n.devices[i] = &Device{info[i], false, false}
+//	}
 }
 
 // Execute a command on the node

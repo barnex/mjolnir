@@ -1,7 +1,12 @@
 package helheim
 
+type NodeInfo struct{
+	CudaError int
+	ErrorString string
+	Devices []DeviceInfo
+}
+
 type DeviceInfo struct {
-	//Error string
 	Name     string
 	TotalMem int64
 }
