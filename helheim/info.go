@@ -1,9 +1,9 @@
 package helheim
 
-type NodeInfo struct{
-	CudaError int
+type NodeInfo struct {
+	CudaError   int
 	ErrorString string
-	Devices []DeviceInfo
+	Devices     []DeviceInfo
 }
 
 type DeviceInfo struct {

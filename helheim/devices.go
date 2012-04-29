@@ -32,10 +32,10 @@ func (n *Node) Autoconf() {
 	err = json.Unmarshal(bytes, &info)
 	Check(err)
 	Debug("muninn says: ", info)
-//	n.devices = make([]*Device, len(info))
-//	for i := range n.devices {
-//		n.devices[i] = &Device{info[i], false, false}
-//	}
+	//	n.devices = make([]*Device, len(info))
+	//	for i := range n.devices {
+	//		n.devices[i] = &Device{info[i], false, false}
+	//	}
 }
 
 // Execute a command on the node
