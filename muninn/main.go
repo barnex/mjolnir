@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-
 	var info NodeInfo
 
+	// If an error occurs, send it in the NodeInfo
 	defer func() {
 		err := recover()
 		if err != nil {
@@ -21,6 +21,7 @@ func main() {
 			}
 		}
 
+		// Send the info no matter what
 		bytes, err2 := json.Marshal(info)
 		Check(err2)
 		_, err3 := os.Stdout.Write(bytes)
@@ -28,7 +29,7 @@ func main() {
 		Check(err3)
 	}()
 
-	cu.Init(7)
+	cu.Init(0)
 	NDev := cu.DeviceGetCount()
 	info.Devices = make([]DeviceInfo, NDev)
 	for i := range info.Devices {
