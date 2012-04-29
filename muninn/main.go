@@ -10,6 +10,13 @@ import (
 
 
 func main() {
+	/*defer func(){
+		err := recover()
+		if err != nil{
+
+		}
+	}()
+	*/
 	cu.Init(0)
 	NDev := cu.DeviceGetCount()
 	info := make([]DeviceInfo, NDev)
