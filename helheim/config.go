@@ -7,4 +7,5 @@ func Configure() {
 	AddGroup("eelab", 0)
 
 	AddNode([]string{"ssh", "localhost"})
+	AddNode([]string{"ssh", "dynamag"}) // faulty node
 }
