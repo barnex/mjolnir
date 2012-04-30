@@ -35,5 +35,6 @@ func main() {
 	for i := range info.Devices {
 		dev := cu.DeviceGet(i)
 		info.Devices[i].Name = dev.Name()
+		info.Devices[i].TotalMem = dev.TotalMem()
 	}
 }
