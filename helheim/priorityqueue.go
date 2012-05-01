@@ -6,7 +6,6 @@ import(
 
 type PriorityQueue []*Job
 
-
 func (pq PriorityQueue) Len() int { 
 	return len(pq) 
 }
