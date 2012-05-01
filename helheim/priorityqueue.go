@@ -1,7 +1,6 @@
 package helheim
 
-import (
-)
+import ()
 
 // used internally by JobQueue.
 type priorityQueue []*Job
