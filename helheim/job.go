@@ -1,5 +1,5 @@
 package helheim
 
-type Job struct{
+type Job struct {
 	priority int
 }

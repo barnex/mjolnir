@@ -1,10 +1,10 @@
 package helheim
 
-import(
+import (
 	"testing"
 )
 
-func TestJobQueue(test*testing.T){
+func TestJobQueue(test *testing.T) {
 	var q JobQueue
 
 	q.Push(&Job{3})
@@ -14,12 +14,14 @@ func TestJobQueue(test*testing.T){
 	q.Push(&Job{1})
 
 	prev := 10
-	if q.Len() != 5{
+	if q.Len() != 5 {
 		test.Error("q.Len(): ", q.Len())
 	}
-	for q.Len() != 0{
+	for q.Len() != 0 {
 		job := q.Pop()
-		if job.priority > prev{test.Error(prev, "<", job.priority)}
+		if job.priority > prev {
+			test.Error(prev, "<", job.priority)
+		}
 		prev = job.priority
 	}
 }
