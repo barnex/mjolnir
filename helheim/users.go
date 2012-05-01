@@ -14,6 +14,7 @@ type Group struct {
 type User struct {
 	name  string
 	share int // Relative group share of the user
+	//que PriorityQueue
 }
 
 // Add new group to global list and return it as well.

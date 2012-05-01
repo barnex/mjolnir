@@ -60,11 +60,11 @@ func (n *Node) Autoconf() {
 
 // Execute a command on the node
 func (n *Node) Exec(command string, args ...string) (output []byte, err error) {
-	cmd := exec.Command(n.ssh[0], append(append(n.ssh[1:], command), args...)...)
-	//Debug(cmd)
+	allArgs := append(append(n.ssh[1:], command), args...)
+	cmd := exec.Command(n.ssh[0], allArgs...)
+	Debug("exec: ", n.ssh[0], allArgs)
 	output, err = cmd.CombinedOutput()
 	Debug(string(output))
-	//Check(err)
 	return
 }
 
