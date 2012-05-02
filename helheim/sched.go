@@ -1,8 +1,11 @@
 package helheim
 
 import (
+	"errors"
 	"io"
 	"os/user"
+	"strconv"
+	"strings"
 )
 
 var (
@@ -24,7 +27,41 @@ func RunSched() {
 }
 
 // API func, adds job.
-func Add(out io.Writer, usr *user.User, args []string) error {
-	Debug(usr.Username, "add", args)
+func Add(out io.Writer, osUser *user.User, args []string) (err error) {
+	// Setup and check user
+	username := osUser.Username
+	usr, ok := users[username]
+	Debug(usr.name, "add", args)
+	if !ok {
+		return errors.New("unknown username: " + username)
+	}
+
+	// Parse "-nice" flag
+	nice := 0
+	nicei := -1
+	for i, arg := range args {
+		if strings.HasPrefix(arg, "-") {
+			if arg == "-nice" {
+				if i == len(args)-1 {
+					return errors.New("-nice needs argument")
+				}
+				nice, err = strconv.Atoi(args[i+1])
+				nicei = i
+				if err != nil {
+					return
+				}
+				break
+			} else {
+				return errors.New("unknown option: " + arg + ". usage: add -nice <N> file")
+			}
+		}
+	}
+	if nicei != -1 {
+		args = append(args[:nicei], args[nicei+2:]...)
+	}
+	Debug("nice:", nice)
+	Debug("args:", args)
+
+	//usr.que.Push(NewJob())
 	return nil
 }
