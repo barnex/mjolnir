@@ -1,6 +1,9 @@
 package helheim
 
-import ()
+import (
+	"fmt"
+	"io"
+)
 
 // Group of users who have made a collective investment in the cluster.
 type Group struct {
@@ -42,4 +45,15 @@ func (g *Group) TotalUserShare() int {
 		total += usr.share
 	}
 	return total
+}
+
+// API func, prints user info.
+func Groups(out io.Writer) error {
+	for _, gr := range groups {
+		fmt.Fprint(out, gr.name, " (share ", gr.share, "/", TotalGroupShare(), ")\n")
+		for _, usr := range gr.users {
+			fmt.Fprint(out, "\t", usr.name, " (share ", usr.share, "/", gr.TotalUserShare(), ")\n")
+		}
+	}
+	return nil
 }
