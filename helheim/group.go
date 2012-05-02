@@ -18,7 +18,12 @@ func AddGroup(name string, share int) *Group {
 
 // Add a new user to the group.
 func (g *Group) AddUser(name string, share int) {
-	g.users = append(g.users, &User{name, share})
+	if _, ok := users[name]; ok {
+		panic("user " + name + " already added")
+	}
+	user := &User{name, share, NewJobQueue()}
+	g.users = append(g.users, user)
+	users[name] = user
 }
 
 // Sum of shares of all groups.

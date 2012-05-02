@@ -9,7 +9,7 @@ import (
 type User struct {
 	name  string
 	share int // Relative group share of the user
-	//que PriorityQueue
+	que   JobQueue
 }
 
 // API func, prints user info.

@@ -13,6 +13,13 @@ type JobQueue struct {
 // Capacity for JobQueue.
 const DEFAULT_CAP = 1000
 
+// JobQueue constructor.
+func NewJobQueue() JobQueue {
+	var q JobQueue
+	q.init()
+	return q
+}
+
 func (jq *JobQueue) init() {
 	jq.pq = make(priorityQueue, 0, DEFAULT_CAP)
 	heap.Init(&(jq.pq))

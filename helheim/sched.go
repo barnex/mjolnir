@@ -3,6 +3,7 @@ package helheim
 var (
 	nodes  []*Node
 	groups []*Group
+	users  = make(map[string]*User) // Username -> User map.
 )
 
 // Run the scheduler. Infinite loop.
