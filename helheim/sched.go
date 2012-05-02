@@ -2,6 +2,7 @@ package helheim
 
 import (
 	"io"
+	"os/user"
 )
 
 var (
@@ -23,7 +24,7 @@ func RunSched() {
 }
 
 // API func, adds job.
-func Add(out io.Writer, args []string) error {
-	Debug("add", args)
+func Add(out io.Writer, usr *user.User, args []string) error {
+	Debug(usr.Username, "add", args)
 	return nil
 }

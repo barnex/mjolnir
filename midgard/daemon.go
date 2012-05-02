@@ -13,6 +13,7 @@ import (
 	"net"
 	"net/http"
 	"net/rpc"
+	"os/user"
 	"reflect"
 )
 
@@ -41,14 +42,14 @@ type RPC struct {
 func (rpc RPC) Call(argz Args, resp *string) (err error) {
 
 	args := argz.CliArgs
-	user := argz.User
+	usr := argz.User
 
 	Debug("midgard: aquire lock")
 	Lock.Lock()
 	defer Lock.Unlock()
 	defer Debug("midgard: release lock")
 
-	Debug("ServerRPC.Call", user, args)
+	Debug("ServerRPC.Call", usr, args)
 
 	if len(args) == 0 {
 		args = []string{"help"}
@@ -93,6 +94,12 @@ func (rpc RPC) Call(argz Args, resp *string) (err error) {
 			err = NewError(cmd, ": needs argument")
 		} else {
 			err = fnc(out, args)
+		}
+	case func(io.Writer, *user.User, []string) error:
+		if len(args) == 0 {
+			err = NewError(cmd, ": needs argument")
+		} else {
+			err = fnc(out, usr, args)
 		}
 	}
 	*resp = string(out.Bytes())
