@@ -10,9 +10,16 @@ import (
 	"net/rpc"
 	"os"
 	"os/exec"
+	"os/user"
 	"strings"
 	"time"
 )
+
+// Args struct passed from client to daemon
+type Args struct {
+	CliArgs []string   // Command line args
+	User    *user.User // User info
+}
 
 // Main loop for "client" mode (the normal mode).
 // Simply passes the arguments to the daemon and
@@ -20,7 +27,9 @@ import (
 func MainClient(args []string) {
 	client := dialDaemon()
 	var resp string
-	err := client.Call("RPC.Call", args, &resp)
+	user, err := user.Current()
+	Check(err)
+	err = client.Call("RPC.Call", &Args{args, user}, &resp)
 	if err != nil {
 		fmt.Fprint(os.Stderr, cleanup(err.Error()))
 	}

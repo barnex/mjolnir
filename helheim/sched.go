@@ -1,5 +1,9 @@
 package helheim
 
+import (
+	"io"
+)
+
 var (
 	nodes  []*Node
 	groups []*Group
@@ -16,4 +20,10 @@ func RunSched() {
 			FillNodes()
 		}
 	}*/
+}
+
+// API func, adds job.
+func Add(out io.Writer, args []string) error {
+	Debug("add", args)
+	return nil
 }

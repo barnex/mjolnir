@@ -34,4 +34,7 @@ func initMidgard() {
 
 	midgard.Api["nodes"] = Nodes
 	midgard.Help["nodes"] = "Print node info"
+
+	midgard.Api["add"] = Add
+	midgard.Help["add"] = "Add job"
 }

@@ -38,14 +38,17 @@ type RPC struct {
 // and a response to the user is returned in *resp.
 // Here, run-time reflection is used to match the user command
 // to a method on the API type.
-func (rpc RPC) Call(args []string, resp *string) (err error) {
+func (rpc RPC) Call(argz Args, resp *string) (err error) {
+
+	args := argz.CliArgs
+	user := argz.User
 
 	Debug("midgard: aquire lock")
 	Lock.Lock()
 	defer Lock.Unlock()
 	defer Debug("midgard: release lock")
 
-	Debug("ServerRPC.Call", args)
+	Debug("ServerRPC.Call", user, args)
 
 	if len(args) == 0 {
 		args = []string{"help"}
