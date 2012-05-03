@@ -33,6 +33,19 @@ func FillNodes() {
 //func NextJob()*Job{
 //}
 
+func NextUser() *User {
+	var nextUser *User
+	leastFrac := 1e100
+	for _, u := range NextGroup().users {
+		if u.HasJobs() {
+			if u.FracUse() < leastFrac {
+				nextUser = u
+				leastFrac = u.FracUse()
+			}
+		}
+	}
+	return nextUser
+}
 func NextGroup() *Group {
 	var nextGroup *Group
 	leastFrac := 1e100
@@ -49,6 +62,7 @@ func NextGroup() *Group {
 
 func PrintNext(out io.Writer) error {
 	fmt.Fprintln(out, "next group:", NextGroup())
+	fmt.Fprintln(out, "next user:", NextUser())
 	return nil
 }
 
