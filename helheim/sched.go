@@ -36,14 +36,14 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 		return errors.New("unknown username: " + username)
 	}
 
-	// Parse "-nice" flag
+	// Parse "-pr" flag
 	nice := DEFAULT_PRIORITY
 	nicei := -1
 	for i, arg := range args {
 		if strings.HasPrefix(arg, "-") {
-			if arg == "-nice" {
+			if arg == "-pr" {
 				if i == len(args)-1 {
-					return errors.New("-nice needs argument")
+					return errors.New("-pr needs argument")
 				}
 				nice, err = strconv.Atoi(args[i+1])
 				nicei = i
@@ -52,7 +52,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 				}
 				break
 			} else {
-				return errors.New("unknown option: " + arg + ". usage: add -nice <N> file")
+				return errors.New("unknown option: " + arg + ". usage: add -pr <N> file")
 			}
 		}
 	}
@@ -60,8 +60,8 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	if nicei != -1 {
 		args = append(args[:nicei], args[nicei+2:]...)
 	}
-	Debug("nice:", nice)
-	Debug("args:", args)
+//	Debug("nice:", nice)
+//	Debug("args:", args)
 
 	for _, arg := range args {
 		// TODO: duplicate job detection using map
