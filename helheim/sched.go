@@ -1,12 +1,11 @@
 package helheim
 
-
 var (
-	nodes  []*Node
-	groups []*Group
-	users  = make(map[string]*User) // Username -> User map.
+	nodes   []*Node
+	groups  []*Group
+	users   = make(map[string]*User) // Username -> User map.
 	running JobList
-	done JobList
+	done    JobList
 )
 
 // Run the scheduler. Infinite loop.
@@ -21,7 +20,7 @@ func RunSched() {
 	}*/
 }
 
-func FillNodes(){
+func FillNodes() {
 
 }
 
@@ -29,9 +28,6 @@ func FillNodes(){
 //	
 //}
 
-
-func Dispatch(job*Job, node*Node, dev[]int){
-
+func Dispatch(job *Job, node *Node, dev []int) {
+	running.Append(job)
 }
-
-

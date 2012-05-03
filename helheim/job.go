@@ -2,7 +2,6 @@ package helheim
 
 import (
 	"fmt"
-	"io"
 )
 
 // Compute job.
@@ -26,21 +25,6 @@ func NewJob(file string) *Job {
 	return job
 }
 
-func (j*Job)String()string{
+func (j *Job) String() string {
 	return fmt.Sprintf("%07d %02d  %v", j.id, j.priority, j.file)
-}
-
-// API func, prints job info.
-func Status(out io.Writer) error {
-	for _, usr := range users {
-		if usr.que.Len() == 0 {
-			continue
-		}
-		fmt.Fprintln(out, usr)
-		fmt.Fprintln(out, "  ID      PR  FILE")
-		for _, job := range usr.que.pq {
-			fmt.Fprintln(out, " ", job)
-		}
-	}
-	return nil
 }

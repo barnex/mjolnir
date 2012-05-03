@@ -9,12 +9,12 @@ import (
 type User struct {
 	name  string
 	share int // Relative group share of the user
-	use int // Current number of jobs running
+	use   int // Current number of jobs running
 	que   JobQueue
 	group *Group
 }
 
-func(u*User)String()string{
+func (u *User) String() string {
 	return u.name
 }
 
