@@ -63,7 +63,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	Debug("nice:", nice)
 	Debug("args:", args)
 
-	for _, arg := range args{
+	for _, arg := range args {
 		// TODO: duplicate job detection using map
 		job := NewJob(arg)
 		job.priority = nice

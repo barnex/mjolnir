@@ -37,4 +37,7 @@ func initMidgard() {
 
 	midgard.Api["add"] = Add
 	midgard.Help["add"] = "Add job"
+
+	midgard.Api["status"] = Status
+	midgard.Help["status"] = "Show queue status"
 }
