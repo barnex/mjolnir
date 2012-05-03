@@ -29,6 +29,9 @@ func initMidgard() {
 	midgard.Api["groups"] = Groups
 	midgard.Help["groups"] = "Print group info"
 
+	midgard.Api["next"] = PrintNext
+	midgard.Help["next"] = "Print next job to run"
+
 	midgard.Api["users"] = Users
 	midgard.Help["users"] = "Print user info"
 

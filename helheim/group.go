@@ -39,7 +39,7 @@ func TotalGroupShare() int {
 }
 
 // Sum of shares of all users in the group.
-func (g *Group) TotalUserShare() int {
+func (g *Group) TotalShare() int {
 	total := 0
 	for _, usr := range g.users {
 		total += usr.share
@@ -56,12 +56,28 @@ func (g *Group) TotalUse() int {
 	return total
 }
 
+// Roughly the fractional use of the group.
+// Group with largest share wins if no jobs are running yet
+func (g *Group) FracUse() float64 {
+	return (float64(g.TotalUse()) + 1e-3) / float64(g.TotalShare())
+}
+
+// Returns if this group has any jobs queued
+func (g *Group) HasJobs() bool {
+	for _, usr := range g.users {
+		if usr.HasJobs() {
+			return true
+		}
+	}
+	return false
+}
+
 // API func, prints user info.
 func Groups(out io.Writer) error {
 	for _, gr := range groups {
 		fmt.Fprint(out, gr.name, " (share ", gr.share, "/", TotalGroupShare(), ")\n")
 		for _, usr := range gr.users {
-			fmt.Fprint(out, "\t", usr.name, " (share ", usr.share, "/", gr.TotalUserShare(), ")\n")
+			fmt.Fprint(out, "\t", usr.name, " (share ", usr.share, "/", gr.TotalShare(), ")\n")
 		}
 	}
 	return nil

@@ -18,6 +18,10 @@ func (u *User) String() string {
 	return u.name
 }
 
+func (u *User) HasJobs() bool {
+	return u.que.Len() > 0
+}
+
 // API func, prints user info.
 func Users(out io.Writer) error {
 	for _, u := range users {

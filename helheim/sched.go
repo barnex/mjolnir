@@ -1,5 +1,10 @@
 package helheim
 
+import (
+	"fmt"
+	"io"
+)
+
 var (
 	nodes   []*Node
 	groups  []*Group
@@ -24,9 +29,28 @@ func FillNodes() {
 
 }
 
+// Next job who gets to run
 //func NextJob()*Job{
-//	
 //}
+
+func NextGroup() *Group {
+	var nextGroup *Group
+	leastFrac := 1e100
+	for _, g := range groups {
+		if g.HasJobs() {
+			if g.FracUse() < leastFrac {
+				nextGroup = g
+				leastFrac = g.FracUse()
+			}
+		}
+	}
+	return nextGroup
+}
+
+func PrintNext(out io.Writer) error {
+	fmt.Fprintln(out, "next group:", NextGroup())
+	return nil
+}
 
 func Dispatch(job *Job, node *Node, dev []int) {
 	running.Append(job)
@@ -34,4 +58,5 @@ func Dispatch(job *Job, node *Node, dev []int) {
 	for _, d := range dev {
 		node.devices[d].busy = true
 	}
+	job.user.use++
 }
