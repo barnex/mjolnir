@@ -47,7 +47,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 
 	for _, arg := range args {
 		// TODO: duplicate job detection using map
-		job := NewJob(arg)
+		job := NewJob(usr, arg)
 		job.priority = nice
 		usr.que.Push(job)
 	}

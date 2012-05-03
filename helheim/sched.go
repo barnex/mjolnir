@@ -30,4 +30,8 @@ func FillNodes() {
 
 func Dispatch(job *Job, node *Node, dev []int) {
 	running.Append(job)
+	job.node = node
+	for _, d := range dev {
+		node.devices[d].busy = true
+	}
 }

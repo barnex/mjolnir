@@ -14,23 +14,6 @@ type Node struct {
 	devices     []*Device // GPUs in the node.
 }
 
-// Compute device.
-type Device struct {
-	name     string
-	totalMem int64
-	busy     bool
-	drain    bool
-}
-
-func (d *Device) String() string {
-	return fmt.Sprint(d.name, " ", d.Megabytes(), "MB")
-}
-
-// Total memory in megabytes.
-func (d *Device) Megabytes() int {
-	return int(d.totalMem / (1024 * 1024))
-}
-
 func AddNode(ssh []string) {
 	node := &Node{"", ssh, []*Device{}}
 	nodes = append(nodes, node)

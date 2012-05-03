@@ -9,13 +9,12 @@ import (
 type Group struct {
 	name  string
 	share int // Relative cluster share of the group
-	use   int // Current number of jobs running
 	users []*User
 }
 
 // Add new group to global list and return it as well.
 func AddGroup(name string, share int) *Group {
-	group := &Group{name, share, 0, []*User{}}
+	group := &Group{name, share, []*User{}}
 	groups = append(groups, group)
 	return group
 }
@@ -44,6 +43,15 @@ func (g *Group) TotalUserShare() int {
 	total := 0
 	for _, usr := range g.users {
 		total += usr.share
+	}
+	return total
+}
+
+// Total number of running jobs by this group
+func (g *Group) TotalUse() int {
+	total := 0
+	for _, usr := range g.users {
+		total += usr.use
 	}
 	return total
 }
