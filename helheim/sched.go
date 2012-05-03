@@ -34,9 +34,13 @@ func FillNodes() {
 //}
 
 func NextUser() *User {
+	nextGroup := NextGroup()
+	if nextGroup == nil {
+		return nil
+	}
 	var nextUser *User
 	leastFrac := 1e100
-	for _, u := range NextGroup().users {
+	for _, u := range nextGroup.users {
 		if u.HasJobs() {
 			if u.FracUse() < leastFrac {
 				nextUser = u

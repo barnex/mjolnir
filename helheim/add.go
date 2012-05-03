@@ -13,10 +13,10 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	// Setup and check user
 	username := osUser.Username
 	usr, ok := users[username]
-	Debug(usr.name, "add", args)
 	if !ok {
 		return errors.New("unknown username: " + username)
 	}
+	Debug(usr.name, "add", args)
 
 	// Parse "-pr" flag
 	nice := DEFAULT_PRIORITY

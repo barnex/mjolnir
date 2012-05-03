@@ -3,6 +3,7 @@ package helheim
 func Configure() {
 	dynamat := AddGroup("dynamat", 8)
 	dynamat.AddUser("arne", 2)
+	dynamat.AddUser("test", 1)
 	dynamat.AddUser("mykola", 2)
 	dynamat.AddUser("jonas", 1)
 
