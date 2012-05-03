@@ -26,9 +26,9 @@ func NewJob(file string) *Job {
 	return job
 }
 
-//func (j*Job)String()string{
-//	return fmt.Sprint()
-//}
+func (j*Job)String()string{
+	return fmt.Sprintf("%07d %02d  %v", j.id, j.priority, j.file)
+}
 
 // API func, prints job info.
 func Status(out io.Writer) error {
@@ -37,8 +37,9 @@ func Status(out io.Writer) error {
 			continue
 		}
 		fmt.Fprintln(out, usr)
+		fmt.Fprintln(out, "  ID      PR  FILE")
 		for _, job := range usr.que.pq {
-			fmt.Fprintln(out, "\t", job)
+			fmt.Fprintln(out, " ", job)
 		}
 	}
 	return nil
