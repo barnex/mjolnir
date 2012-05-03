@@ -37,7 +37,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	}
 
 	// Parse "-nice" flag
-	nice := 0
+	nice := DEFAULT_PRIORITY
 	nicei := -1
 	for i, arg := range args {
 		if strings.HasPrefix(arg, "-") {
@@ -56,12 +56,19 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 			}
 		}
 	}
+	// remove flag from args list
 	if nicei != -1 {
 		args = append(args[:nicei], args[nicei+2:]...)
 	}
 	Debug("nice:", nice)
 	Debug("args:", args)
 
-	//usr.que.Push(NewJob())
+	for _, arg := range args{
+		// TODO: duplicate job detection using map
+		job := NewJob(arg)
+		job.priority = nice
+		usr.que.Push(job)
+	}
+
 	return nil
 }
