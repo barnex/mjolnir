@@ -9,12 +9,13 @@ import (
 type Group struct {
 	name  string
 	share int // Relative cluster share of the group
+	use int // Current number of jobs running
 	users []*User
 }
 
 // Add new group to global list and return it as well.
 func AddGroup(name string, share int) *Group {
-	group := &Group{name, share, []*User{}}
+	group := &Group{name, share, 0, []*User{}}
 	groups = append(groups, group)
 	return group
 }
@@ -24,7 +25,7 @@ func (g *Group) AddUser(name string, share int) {
 	if _, ok := users[name]; ok {
 		panic("user " + name + " already added")
 	}
-	user := &User{name, share, NewJobQueue()}
+	user := &User{name, share, 0,  NewJobQueue(), g}
 	g.users = append(g.users, user)
 	users[name] = user
 }
