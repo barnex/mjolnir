@@ -33,6 +33,9 @@ func NewJob(user *User, file string) *Job {
 
 func (j *Job) String() string {
 	str1 := fmt.Sprintf("%07d %-7s %02d  %v", j.id, j.user, j.priority, j.file)
+	if j.node != nil{
+		str1 += fmt.Sprint(" ", j.node, j.dev)
+	}
 	if j.err != nil {
 		str1 += " " + j.err.Error()
 	}
