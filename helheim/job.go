@@ -2,6 +2,7 @@ package helheim
 
 import (
 	"fmt"
+	"path"
 )
 
 // Compute job.
@@ -40,4 +41,9 @@ func (j *Job) String() string {
 		str1 += " " + j.err.Error()
 	}
 	return str1
+}
+
+// Working directory for job.
+func(j*Job)Wd()string{
+	return path.Dir(j.file)
 }

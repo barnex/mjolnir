@@ -25,7 +25,7 @@ func AddNode(name string, ssh ...string) {
 func (n *Node) Autoconf() {
 	// Ask for node auto config.
 	var info NodeInfo
-	bytes, err := n.Exec("/home/arne/go/bin/muninn") //TODO
+	bytes, err := n.Exec("", "/home/arne/go/bin/muninn") //TODO
 	if err == nil {
 		Check(json.Unmarshal(bytes, &info))
 		Debug("muninn says: ", info)
@@ -37,18 +37,19 @@ func (n *Node) Autoconf() {
 	if info.ErrorString != "" {
 		n.err = errors.New(info.ErrorString)
 	}
-	Debug("len(info.Devices))", len(info.Devices))
+	//Debug("len(info.Devices))", len(info.Devices))
 	n.devices = make([]*Device, len(info.Devices))
 	for i, dev := range info.Devices {
-		Debug("dev", i, dev)
+		//Debug("dev", i, dev)
 		n.devices[i] = &Device{dev.Name, dev.TotalMem, false, false}
 	}
 }
 
 // Execute a command on the node
-func (n *Node) Exec(command string, args ...string) (output []byte, err error) {
+func (n *Node) Exec(wd string, command string, args ...string) (output []byte, err error) {
 	allArgs := append(append(n.ssh[1:], command), args...)
 	cmd := exec.Command(n.ssh[0], allArgs...)
+	cmd.Dir = wd
 	Debug("exec: ", n.ssh[0], allArgs)
 	output, err = cmd.CombinedOutput()
 	Debug(string(output))

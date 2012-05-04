@@ -46,7 +46,6 @@ func FillNodes() {
 
 // Start a job on a node
 func Dispatch(job *Job, node *Node, dev []int) {
-	Debug("dispatch", job, "to", node, dev)
 
 	// Bookkeeping
 	job.node = node
@@ -58,12 +57,14 @@ func Dispatch(job *Job, node *Node, dev []int) {
 
 	running.Append(job)
 
+	Debug("dispatch", job)
+
 	// Actually run the job
 	go Exec(job)
 }
 
 func Exec(job *Job) {
-	_, err := job.node.Exec(MUMAX2, job.file)
+	_, err := job.node.Exec(job.Wd(), MUMAX2, job.file)
 
 	lock.Lock()
 
