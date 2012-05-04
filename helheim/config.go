@@ -13,6 +13,6 @@ func Configure() {
 	eelab := AddGroup("eelab", 4)
 	eelab.AddUser("ben", 4)
 
-	AddNode([]string{"ssh", "localhost"})
-	AddNode([]string{"ssh", "dynamag"}) // faulty node
+	AddNode("monster0", "ssh", "localhost")
+	AddNode("dynamag", "ssh", "dynamag") // faulty node
 }

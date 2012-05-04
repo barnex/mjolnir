@@ -2,6 +2,7 @@ package helheim
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os/exec"
@@ -9,13 +10,14 @@ import (
 
 // Compute node.
 type Node struct {
-	errorString string    // Error message configuring the node, if any.
-	ssh         []string  // Command to login to this node. E.g.: {"ssh", "localhost"}.
-	devices     []*Device // GPUs in the node.
+	name    string
+	err     error     // Error message configuring the node, if any.
+	ssh     []string  // Command to login to this node. E.g.: {"ssh", "localhost"}.
+	devices []*Device // GPUs in the node.
 }
 
-func AddNode(ssh []string) {
-	node := &Node{"", ssh, []*Device{}}
+func AddNode(name string, ssh ...string) {
+	node := &Node{name, nil, ssh, []*Device{}}
 	nodes = append(nodes, node)
 	node.Autoconf()
 }
@@ -32,7 +34,9 @@ func (n *Node) Autoconf() {
 	}
 
 	// Store received config info.
-	n.errorString = info.ErrorString
+	if info.ErrorString != "" {
+		n.err = errors.New(info.ErrorString)
+	}
 	Debug("len(info.Devices))", len(info.Devices))
 	n.devices = make([]*Device, len(info.Devices))
 	for i, dev := range info.Devices {
@@ -54,10 +58,17 @@ func (n *Node) Exec(command string, args ...string) (output []byte, err error) {
 // API func, prints node info.
 func Nodes(out io.Writer) error {
 	for _, n := range nodes {
-		fmt.Fprintln(out, n.ssh, n.errorString)
+		fmt.Fprintln(out, n)
 		for _, d := range n.devices {
 			fmt.Fprintln(out, "\t", d)
 		}
 	}
 	return nil
+}
+
+func (n *Node) String() string {
+	if n.err == nil {
+		return n.name
+	}
+	return n.name + ": " + n.err.Error()
 }

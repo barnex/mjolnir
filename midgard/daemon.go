@@ -44,10 +44,10 @@ func (rpc RPC) Call(argz Args, resp *string) (err error) {
 	args := argz.CliArgs
 	usr := argz.User
 
-	Debug("midgard: aquire lock")
+	//Debug("midgard: aquire lock")
 	Lock.Lock()
 	defer Lock.Unlock()
-	defer Debug("midgard: release lock")
+	//defer Debug("midgard: release lock")
 
 	Debug("ServerRPC.Call", usr, args)
 
