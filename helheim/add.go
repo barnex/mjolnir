@@ -53,5 +53,6 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	}
 
 	FillNodes()
+
 	return nil
 }

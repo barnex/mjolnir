@@ -2,11 +2,6 @@ package helheim
 
 import (
 	"mjolnir/midgard"
-	"sync"
-)
-
-var (
-	lock sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
 )
 
 func MainDaemon() {
@@ -14,7 +9,8 @@ func MainDaemon() {
 	Configure()
 	initMidgard()
 
-	go RunSched()
+	//go RunSched()
+	//go RunHeartbeat()
 
 	// Start listening for commands
 	midgard.Listen()

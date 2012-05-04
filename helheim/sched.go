@@ -3,9 +3,12 @@ package helheim
 import (
 	"fmt"
 	"io"
+	"sync"
+	//"time"
 )
 
 var (
+	lock    sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
 	nodes   []*Node
 	groups  []*Group
 	users   = make(map[string]*User) // Username -> User map.
@@ -13,18 +16,22 @@ var (
 	done    JobList
 )
 
-// Run the scheduler. Infinite loop.
-func RunSched() {
-	FillNodes()
-	/*for {
-		select {
-		case done := <-finish:
-			Undispatch(done.Job, done.exitStatus)
-			FillNodes()
-		}
-	}*/
-}
+const (
+	SECOND    = 1e9
+	HEARTBEAT = 1 * SECOND
+)
 
+// Run the scheduler. Infinite loop.
+//func RunSched() {
+//	for {
+//		lock.Lock()
+//		FillNodes()
+//		lock.Unlock()
+//		time.Sleep(HEARTBEAT)
+//	}
+//}
+
+// Start as many jobs as possible.
 func FillNodes() {
 	for DevAvailable() {
 		usr := NextUser()
@@ -37,6 +44,48 @@ func FillNodes() {
 	}
 }
 
+// Start a job on a node
+func Dispatch(job *Job, node *Node, dev []int) {
+	Debug("dispatch", job, "to", node, dev)
+
+	// Bookkeeping
+	job.node = node
+	job.dev = dev
+	for _, d := range dev {
+		node.devices[d].busy = true
+	}
+	job.user.use += len(dev)
+
+	running.Append(job)
+
+	// Actually run the job
+	go Exec(job)
+}
+
+func Exec(job *Job) {
+	_, err := job.node.Exec(MUMAX2, job.file)
+
+	lock.Lock()
+
+	job.err = err
+	Undispatch(job)
+
+	lock.Unlock()
+}
+
+func Undispatch(job *Job) {
+	Debug("undispatch", job)
+	for _, d := range job.dev {
+		job.node.devices[d].busy = false
+	}
+	job.user.use -= len(job.dev)
+
+	running.Remove(job)
+	done.Append(job)
+	FillNodes()
+}
+
+// Find a device and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {
 	for _, n := range nodes {
 		for i, d := range n.devices {
@@ -94,18 +143,9 @@ func NextGroup() *Group {
 	return nextGroup
 }
 
+// API func, prints the next one who gets to run a job.
 func PrintNext(out io.Writer) error {
 	fmt.Fprintln(out, "next group:", NextGroup())
 	fmt.Fprintln(out, "next user:", NextUser())
 	return nil
-}
-
-func Dispatch(job *Job, node *Node, dev []int) {
-	Debug("dispatch", job, "to", node, dev)
-	running.Append(job)
-	job.node = node
-	for _, d := range dev {
-		node.devices[d].busy = true
-	}
-	job.user.use++
 }

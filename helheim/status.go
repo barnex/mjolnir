@@ -7,6 +7,7 @@ import (
 
 // API func, prints job info.
 func Status(out io.Writer) error {
+	// running
 	if len(running) > 0 {
 		fmt.Fprintln(out, "running:")
 	}
@@ -14,6 +15,7 @@ func Status(out io.Writer) error {
 		fmt.Fprintln(out, " ", job)
 	}
 
+	// queued
 	for _, usr := range users {
 		if usr.que.Len() == 0 {
 			continue
@@ -23,6 +25,14 @@ func Status(out io.Writer) error {
 		for _, job := range usr.que.pq {
 			fmt.Fprintln(out, " ", job)
 		}
+	}
+
+	// done
+	if len(done) > 0 {
+		fmt.Fprintln(out, "finished:")
+	}
+	for _, job := range done {
+		fmt.Fprintln(out, " ", job)
 	}
 	return nil
 }

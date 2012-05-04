@@ -1,5 +1,8 @@
 package helheim
 
+// executable
+var MUMAX2 = "/home/arne/mumax2.git/bin/mumax2"
+
 func Configure() {
 	dynamat := AddGroup("dynamat", 8)
 	dynamat.AddUser("arne", 2)
@@ -11,5 +14,5 @@ func Configure() {
 	eelab.AddUser("ben", 4)
 
 	AddNode([]string{"ssh", "localhost"})
-	//AddNode([]string{"ssh", "dynamag"}) // faulty node
+	AddNode([]string{"ssh", "dynamag"}) // faulty node
 }
