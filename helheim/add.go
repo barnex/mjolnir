@@ -52,5 +52,6 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 		usr.que.Push(job)
 	}
 
+	FillNodes()
 	return nil
 }

@@ -26,13 +26,41 @@ func RunSched() {
 }
 
 func FillNodes() {
-
+	for DevAvailable() {
+		usr := NextUser()
+		if usr == nil {
+			return
+		} // no jobs queued 
+		job := usr.que.Pop()
+		node, devid := FindDevice(job)
+		Dispatch(job, node, devid)
+	}
 }
 
-// Next job who gets to run
-//func NextJob()*Job{
-//}
+func FindDevice(job *Job) (node *Node, dev []int) {
+	for _, n := range nodes {
+		for i, d := range n.devices {
+			if !d.busy {
+				return n, []int{i}
+			}
+		}
+	}
+	return nil, nil
+}
 
+// Is a computing device available?
+func DevAvailable() bool {
+	for _, n := range nodes {
+		for _, d := range n.devices {
+			if !d.busy {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// Next user who gets to run a job.
 func NextUser() *User {
 	nextGroup := NextGroup()
 	if nextGroup == nil {
@@ -50,6 +78,8 @@ func NextUser() *User {
 	}
 	return nextUser
 }
+
+// Next group who gets to run a job.
 func NextGroup() *Group {
 	var nextGroup *Group
 	leastFrac := 1e100
@@ -71,6 +101,7 @@ func PrintNext(out io.Writer) error {
 }
 
 func Dispatch(job *Job, node *Node, dev []int) {
+	Debug("dispatch", job, "to", node, dev)
 	running.Append(job)
 	job.node = node
 	for _, d := range dev {
