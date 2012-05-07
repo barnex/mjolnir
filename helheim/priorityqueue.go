@@ -26,11 +26,12 @@ func (pq *priorityQueue) Push(x interface{}) {
 	// To simplify indexing expressions in these methods, we save a copy of the
 	// slice object. We could instead write (*pq)[i].
 	a := *pq
-	n := len(a)
-	a = a[0 : n+1]
+	//n := len(a)
+	//a = a[0 : n+1]
 	item := x.(*Job)
+	a = append(a, item)
 	//item.index = n
-	a[n] = item
+	//a[n] = item
 	*pq = a
 }
 
