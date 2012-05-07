@@ -25,7 +25,7 @@ func AddNode(name string, ssh ...string) {
 func (n *Node) Autoconf() {
 	// Ask for node auto config.
 	var info NodeInfo
-	bytes, err := n.Exec("", "/home/arne/go/bin/muninn") //TODO
+	bytes, err := n.Exec("", MUNINN) //TODO
 	if err == nil {
 		Check(json.Unmarshal(bytes, &info))
 		Debug("muninn says: ", info)

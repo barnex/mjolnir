@@ -1,18 +1,23 @@
 package helheim
 
 // executable
-var MUMAX2 = "/home/arne/mumax2.git/bin/mumax2"
+const(
+ MUMAX2 = "/home/mumax/mumax2/bin/mumax2"
+ MUNINN = "/home/mumax/go/bin/muninn"
+)
 
 func Configure() {
 	dynamat := AddGroup("dynamat", 8)
-	dynamat.AddUser("arne", 2)
-	dynamat.AddUser("test", 1)
-	dynamat.AddUser("mykola", 2)
+	dynamat.AddUser("arne", 3)
+	dynamat.AddUser("mykola", 3)
 	dynamat.AddUser("jonas", 1)
+	dynamat.AddUser("mathias", 1)
 
-	eelab := AddGroup("eelab", 4)
-	eelab.AddUser("ben", 4)
+	eelab := AddGroup("eelab", 1)
+	eelab.AddUser("ben", 1)
 
-	AddNode("monster0", "ssh", "localhost")
-	AddNode("dynamag", "ssh", "dynamag") // faulty node
+	AddNode("fermi0" , "ssh", "192.168.0.2")
+	AddNode("fermi1" , "ssh", "192.168.0.3")
+	AddNode("kepler0", "ssh", "192.168.0.4")
+	AddNode("kepler1", "ssh", "192.168.0.5")
 }
