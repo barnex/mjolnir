@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 	"sync"
-	//"time"
+	"time"
 )
 
 var (
@@ -15,21 +15,6 @@ var (
 	running JobList
 	done    JobList
 )
-
-const (
-	SECOND    = 1e9
-	HEARTBEAT = 1 * SECOND
-)
-
-// Run the scheduler. Infinite loop.
-//func RunSched() {
-//	for {
-//		lock.Lock()
-//		FillNodes()
-//		lock.Unlock()
-//		time.Sleep(HEARTBEAT)
-//	}
-//}
 
 // Start as many jobs as possible.
 func FillNodes() {
@@ -50,6 +35,7 @@ func Dispatch(job *Job, node *Node, dev []int) {
 	// Bookkeeping
 	job.node = node
 	job.dev = dev
+	job.startTime = time.Now()
 	for _, d := range dev {
 		node.devices[d].busy = true
 	}
@@ -67,15 +53,15 @@ func Exec(job *Job) {
 	_, err := job.node.Exec(job.Wd(), MUMAX2, job.file)
 
 	lock.Lock()
+	defer lock.Unlock()
 
 	job.err = err
 	Undispatch(job)
-
-	lock.Unlock()
 }
 
 func Undispatch(job *Job) {
 	Debug("undispatch", job)
+	job.stopTime = time.Now()
 	for _, d := range job.dev {
 		job.node.devices[d].busy = false
 	}

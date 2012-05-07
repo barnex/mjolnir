@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"time"
 )
 
 // Compute node.
@@ -52,6 +53,7 @@ func (n *Node) Exec(wd string, command string, args ...string) (output []byte, e
 	cmd.Dir = wd
 	Debug("exec: ", n.ssh[0], allArgs)
 	output, err = cmd.CombinedOutput()
+	time.Sleep(5*SECOND)
 	Debug(string(output))
 	return
 }

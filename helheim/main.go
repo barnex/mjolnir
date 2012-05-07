@@ -9,8 +9,9 @@ func MainDaemon() {
 	Configure()
 	initMidgard()
 
-	//go RunSched()
-	//go RunHeartbeat()
+	FillNodes()
+
+	go RunHeartbeat()
 
 	// Start listening for commands
 	midgard.Listen()

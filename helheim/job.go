@@ -3,17 +3,20 @@ package helheim
 import (
 	"fmt"
 	"path"
+	"time"
 )
 
 // Compute job.
 type Job struct {
-	priority int
-	id       int
-	file     string
-	user     *User
-	node     *Node
-	dev      []int
-	err      error
+	priority  int       // User-defined job priority
+	id        int       // Unique job id
+	file      string    // Mumax input file
+	user      *User     // User who owns job
+	node      *Node     // Node assigned to job, if any yet
+	dev       []int     // GPU device indices assigned to job, if any yet
+	err       error     // Error executing job, if any
+	startTime time.Time // Walltime when job was started
+	stopTime time.Time // Walltime when job was stoped
 }
 
 const DEFAULT_PRIORITY = 0
@@ -33,8 +36,9 @@ func NewJob(user *User, file string) *Job {
 }
 
 func (j *Job) String() string {
-	str1 := fmt.Sprintf("%07d %-7s %02d  %v", j.id, j.user, j.priority, j.file)
-	if j.node != nil{
+	wall := j.Walltime()
+	str1 := fmt.Sprintf("%07d %-7s %02d  %02d:%02d:%02d %v", j.id, j.user, j.priority, int(wall.Hours()), int(wall.Minutes()), int(wall.Seconds()), j.file)
+	if j.node != nil {
 		str1 += fmt.Sprint(" ", j.node, j.dev)
 	}
 	if j.err != nil {
@@ -44,6 +48,17 @@ func (j *Job) String() string {
 }
 
 // Working directory for job.
-func(j*Job)Wd()string{
+func (j *Job) Wd() string {
 	return path.Dir(j.file)
+}
+
+func(j*Job)Running()bool{
+	return !j.startTime.IsZero() && j.stopTime.IsZero()
+}
+
+func (j *Job) Walltime() time.Duration {
+	if j.Running(){
+		return time.Now().Sub(j.startTime)
+	}
+	return j.stopTime.Sub(j.startTime)
 }
