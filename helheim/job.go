@@ -2,9 +2,9 @@ package helheim
 
 import (
 	"fmt"
+	"os/exec"
 	"path"
 	"time"
-	"os/exec"
 )
 
 // Compute job.
@@ -16,9 +16,9 @@ type Job struct {
 	node      *Node     // Node assigned to job, if any yet
 	dev       []int     // GPU device indices assigned to job, if any yet
 	err       error     // Error executing job, if any
-	cmd *exec.Cmd // Command executing the job
+	cmd       *exec.Cmd // Command executing the job
 	startTime time.Time // Walltime when job was started
-	stopTime time.Time // Walltime when job was stoped
+	stopTime  time.Time // Walltime when job was stoped
 }
 
 const DEFAULT_PRIORITY = 0
@@ -54,12 +54,12 @@ func (j *Job) Wd() string {
 	return path.Dir(j.file)
 }
 
-func(j*Job)Running()bool{
+func (j *Job) Running() bool {
 	return !j.startTime.IsZero() && j.stopTime.IsZero()
 }
 
 func (j *Job) Walltime() time.Duration {
-	if j.Running(){
+	if j.Running() {
 		return time.Now().Sub(j.startTime)
 	}
 	return j.stopTime.Sub(j.startTime)

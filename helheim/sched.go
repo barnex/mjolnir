@@ -46,7 +46,7 @@ func Dispatch(job *Job, node *Node, dev []int) {
 
 	job.cmd = job.node.Cmd(job.Wd(), MUMAX2, job.file)
 
-	go func(){
+	go func() {
 		out, err := job.cmd.CombinedOutput()
 		Debug(string(out)) // TODO
 		lock.Lock()
@@ -79,7 +79,6 @@ func Undispatch(job *Job) {
 	done.Append(job)
 	FillNodes()
 }
-
 
 // Find a device and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {

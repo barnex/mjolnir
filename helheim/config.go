@@ -19,8 +19,8 @@ func Configure() {
 	eelab.AddUser("ben", 1)
 
 	//AddNode("localhost", "ssh", "localhost")
-	AddNode("zotac0" , "ssh", "192.168.0.2")
-	AddNode("zotac1" , "ssh", "192.168.0.3")
+	AddNode("zotac0", "ssh", "192.168.0.2")
+	AddNode("zotac1", "ssh", "192.168.0.3")
 	AddNode("giga0", "ssh", "192.168.0.4")
 	AddNode("giga1", "ssh", "192.168.0.5")
 }

@@ -55,7 +55,7 @@ func (n *Node) Exec(wd string, command string, args ...string) (output []byte, e
 
 // Prepare a command for execution on the node.
 // Prefixes the command line with the appropriate ssh stanza for this node.
-func(n*Node)Cmd(wd string, command string, args ...string) *exec.Cmd{
+func (n *Node) Cmd(wd string, command string, args ...string) *exec.Cmd {
 	allArgs := append(append(n.ssh[1:], command), args...)
 	cmd := exec.Command(n.ssh[0], allArgs...)
 	cmd.Dir = wd
