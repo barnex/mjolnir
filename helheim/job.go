@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path"
 	"time"
+	"os/exec"
 )
 
 // Compute job.
@@ -15,6 +16,7 @@ type Job struct {
 	node      *Node     // Node assigned to job, if any yet
 	dev       []int     // GPU device indices assigned to job, if any yet
 	err       error     // Error executing job, if any
+	cmd *exec.Cmd // Command executing the job
 	startTime time.Time // Walltime when job was started
 	stopTime time.Time // Walltime when job was stoped
 }

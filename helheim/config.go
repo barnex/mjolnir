@@ -2,7 +2,8 @@ package helheim
 
 // executable
 const (
-	MUMAX2 = "/home/mumax/mumax2/bin/mumax2"
+	MUMAX2 = "/home/arne/mumax2.git/bin/mumax2"
+	//MUMAX2 = "/home/mumax/mumax2/bin/mumax2"
 	MUNINN = "/home/arne/go/bin/muninn"
 	//MUNINN = "/home/mumax/go/bin/muninn"
 )

@@ -47,13 +47,20 @@ func (n *Node) Autoconf() {
 
 // Execute a command on the node
 func (n *Node) Exec(wd string, command string, args ...string) (output []byte, err error) {
+	cmd := n.Cmd(wd, command, args...)
+	output, err = cmd.CombinedOutput()
+	Debug(string(output))
+	return
+}
+
+// Prepare a command for execution on the node.
+// Prefixes the command line with the appropriate ssh stanza for this node.
+func(n*Node)Cmd(wd string, command string, args ...string) *exec.Cmd{
 	allArgs := append(append(n.ssh[1:], command), args...)
 	cmd := exec.Command(n.ssh[0], allArgs...)
 	cmd.Dir = wd
 	Debug("exec: ", n.ssh[0], allArgs)
-	output, err = cmd.CombinedOutput()
-	Debug(string(output))
-	return
+	return cmd
 }
 
 // API func, prints node info.

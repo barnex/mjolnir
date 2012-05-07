@@ -31,6 +31,7 @@ func FillNodes() {
 
 // Start a job on a node
 func Dispatch(job *Job, node *Node, dev []int) {
+	Debug("dispatch", job)
 
 	// Bookkeeping
 	job.node = node
@@ -43,21 +44,28 @@ func Dispatch(job *Job, node *Node, dev []int) {
 
 	running.Append(job)
 
-	Debug("dispatch", job)
+	job.cmd = job.node.Cmd(job.Wd(), MUMAX2, job.file)
 
+	go func(){
+		out, err := job.cmd.CombinedOutput()
+		Debug(string(out)) // TODO
+		lock.Lock()
+		job.err = err
+		Undispatch(job)
+		lock.Unlock()
+	}()
 	// Actually run the job
-	go Exec(job)
 }
 
-func Exec(job *Job) {
-	_, err := job.node.Exec(job.Wd(), MUMAX2, job.file)
-
-	lock.Lock()
-	defer lock.Unlock()
-
-	job.err = err
-	Undispatch(job)
-}
+//func Exec(job *Job) {
+//	_, err := job.node.Exec(job.Wd(), MUMAX2, job.file)
+//
+//	lock.Lock()
+//	defer lock.Unlock()
+//
+//	job.err = err
+//	Undispatch(job)
+//}
 
 func Undispatch(job *Job) {
 	Debug("undispatch", job)
@@ -71,6 +79,7 @@ func Undispatch(job *Job) {
 	done.Append(job)
 	FillNodes()
 }
+
 
 // Find a device and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {
