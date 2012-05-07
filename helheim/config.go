@@ -18,9 +18,9 @@ func Configure() {
 	eelab := AddGroup("eelab", 1)
 	eelab.AddUser("ben", 1)
 
-	AddNode("localhost", "ssh", "localhost")
-	//	AddNode("fermi0" , "ssh", "192.168.0.2")
-	//	AddNode("fermi1" , "ssh", "192.168.0.3")
-	//	AddNode("kepler0", "ssh", "192.168.0.4")
-	//	AddNode("kepler1", "ssh", "192.168.0.5")
+	//AddNode("localhost", "ssh", "localhost")
+	AddNode("zotac0" , "ssh", "192.168.0.2")
+	AddNode("zotac1" , "ssh", "192.168.0.3")
+	AddNode("giga0", "ssh", "192.168.0.4")
+	AddNode("giga1", "ssh", "192.168.0.5")
 }
