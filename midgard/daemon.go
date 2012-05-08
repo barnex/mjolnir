@@ -48,6 +48,13 @@ func (rpc RPC) Call(argz Args, resp *string) (err error) {
 	defer Lock.Unlock()
 	//defer Debug("midgard: release lock")
 
+	defer func() {
+		caught := recover()
+		if caught != nil {
+			err = errors.New(fmt.Sprint(caught))
+		}
+	}()
+
 	Debug("ServerRPC.Call", usr, args)
 
 	if len(args) == 0 {

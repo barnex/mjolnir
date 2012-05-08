@@ -43,4 +43,7 @@ func initMidgard() {
 
 	midgard.Api["addnode"] = AddNodeAPI
 	midgard.Help["addnode"] = "Add a compute node"
+
+	midgard.Api["addgroup"] = AddGroupAPI
+	midgard.Help["addgroup"] = "Add a user group"
 }

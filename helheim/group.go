@@ -3,6 +3,8 @@ package helheim
 import (
 	"fmt"
 	"io"
+	"os/user"
+	"strconv"
 )
 
 // Group of users who have made a collective investment in the cluster.
@@ -17,6 +19,16 @@ func AddGroup(name string, share int) *Group {
 	group := &Group{name, share, []*User{}}
 	groups = append(groups, group)
 	return group
+}
+
+func AddGroupAPI(out io.Writer, usr *user.User, args []string) error {
+	group := args[0]
+	share, err := strconv.Atoi(args[1])
+	if err != nil {
+		return err
+	}
+	AddGroup(group, share)
+	return nil
 }
 
 // Add a new user to the group.
