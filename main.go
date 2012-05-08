@@ -6,6 +6,8 @@ import (
 	"flag"
 	"mjolnir/helheim"
 	"mjolnir/midgard"
+	"os"
+	"path"
 )
 
 // Command-line flags for special modes
@@ -27,5 +29,27 @@ func main() {
 	}
 
 	// Client mode: stay in the realm of the humans
-	midgard.MainClient(flag.Args())
+	args := flag.Args()
+	if len(args) > 1 {
+		if args[0] == "add" {
+			ExpandFiles(args[1:])
+		}
+	}
+	midgard.MainClient(args)
+}
+
+// Make file paths absolute.
+func ExpandFiles(args []string) {
+	wd, err := os.Getwd()
+	helheim.Check(err)
+	for i, arg := range args {
+		if !path.IsAbs(arg) && FileExists(arg){
+			args[i] = path.Clean(wd + "/" + arg)
+		}
+	}
+}
+
+func FileExists(file string)bool{
+		_, err := os.Stat(file)
+		return err == nil
 }
