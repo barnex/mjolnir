@@ -17,16 +17,18 @@ type Node struct {
 	devices []*Device // GPUs in the node.
 }
 
-func AddNode(name string, ssh ...string) *Node {
+// Add a new compute node and return it as well.
+func AddNode(name string, ssh ...string) error {
 	node := &Node{name, nil, ssh, []*Device{}}
 	nodes = append(nodes, node)
 	node.Autoconf()
-	return node
+	return node.err
 }
 
+// API func to add new node.
 func AddNodeAPI(out io.Writer, user *user.User, args []string) error {
-	node := AddNode(args[0], args[1:]...)
-	return node.err
+	err := AddNode(args[0], args[1:]...)
+	return err
 }
 
 func (n *Node) Autoconf() {
