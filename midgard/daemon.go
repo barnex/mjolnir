@@ -15,6 +15,7 @@ import (
 	"net/rpc"
 	"os/user"
 	"reflect"
+	"runtime/debug"
 )
 
 // Start serving RPC calls from client instances.
@@ -52,6 +53,7 @@ func (rpc RPC) Call(argz Args, resp *string) (err error) {
 		caught := recover()
 		if caught != nil {
 			err = errors.New(fmt.Sprint(caught))
+			Debug("midgard: panic during call:\n", string(debug.Stack()))
 		}
 	}()
 
