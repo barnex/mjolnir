@@ -40,4 +40,7 @@ func initMidgard() {
 
 	midgard.Api["status"] = Status
 	midgard.Help["status"] = "Show queue status"
+
+	midgard.Api["addnode"] = AddNodeAPI
+	midgard.Help["addnode"] = "Add a compute node"
 }

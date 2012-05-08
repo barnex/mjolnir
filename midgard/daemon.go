@@ -40,7 +40,6 @@ type RPC struct {
 // Here, run-time reflection is used to match the user command
 // to a method on the API type.
 func (rpc RPC) Call(argz Args, resp *string) (err error) {
-
 	args := argz.CliArgs
 	usr := argz.User
 

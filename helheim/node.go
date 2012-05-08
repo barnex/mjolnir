@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"os/user"
 )
 
 // Compute node.
@@ -16,10 +17,16 @@ type Node struct {
 	devices []*Device // GPUs in the node.
 }
 
-func AddNode(name string, ssh ...string) {
+func AddNode(name string, ssh ...string) *Node {
 	node := &Node{name, nil, ssh, []*Device{}}
 	nodes = append(nodes, node)
 	node.Autoconf()
+	return node
+}
+
+func AddNodeAPI(out io.Writer, user *user.User, args []string) error {
+	node := AddNode(args[0], args[1:]...)
+	return node.err
 }
 
 func (n *Node) Autoconf() {
