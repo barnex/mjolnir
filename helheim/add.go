@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io"
 	"os/user"
+	"path"
 	"strconv"
 	"strings"
 )
@@ -47,7 +48,11 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 
 	for _, arg := range args {
 		// TODO: duplicate job detection using map
-		job := NewJob(usr, arg)
+		file := arg
+		if path.IsAbs(file) {
+			file = prefix + file
+		}
+		job := NewJob(usr, file)
 		job.priority = nice
 		usr.que.Push(job)
 	}

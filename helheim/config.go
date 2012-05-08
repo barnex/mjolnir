@@ -10,6 +10,7 @@ import (
 var (
 	executable []string = []string{"mumax2", "-s"} // Executable and arguments to run input files
 	muninn              = "muninn"                 // To be replaced by full path to muninn.
+	prefix              = "/diskless"
 )
 
 func Configure() {
@@ -26,6 +27,8 @@ func Setv(out io.Writer, usr *user.User, args []string) error {
 		executable = val
 	case "muninn":
 		muninn = val[0]
+	case "prefix":
+		prefix = val[0]
 	}
 	return nil
 }
