@@ -44,7 +44,7 @@ func Dispatch(job *Job, node *Node, dev []int) {
 
 	running.Append(job)
 
-	job.cmd = job.node.Cmd(job.Wd(), MUMAX2, job.file)
+	job.cmd = job.node.Cmd(job.Wd(), executable[0], append(executable[1:], job.file)...)
 
 	go func() {
 		out, err := job.cmd.CombinedOutput()

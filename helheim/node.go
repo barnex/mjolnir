@@ -34,7 +34,7 @@ func AddNodeAPI(out io.Writer, user *user.User, args []string) error {
 func (n *Node) Autoconf() {
 	// Ask for node auto config.
 	var info NodeInfo
-	bytes, err := n.Exec("", MUNINN) //TODO
+	bytes, err := n.Exec("", muninn)
 	if err == nil {
 		Check(json.Unmarshal(bytes, &info))
 		Debug("muninn says: ", info)
