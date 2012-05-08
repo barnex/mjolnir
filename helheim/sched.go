@@ -10,7 +10,7 @@ import (
 var (
 	lock    sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
 	nodes   []*Node
-	groups  []*Group
+	groups  = make(map[string]*Group)
 	users   = make(map[string]*User) // Username -> User map.
 	running JobList
 	done    JobList

@@ -3,6 +3,8 @@ package helheim
 import (
 	"fmt"
 	"io"
+	"os/user"
+	"strconv"
 )
 
 // Cluster user.
@@ -12,6 +14,18 @@ type User struct {
 	use   int // Current number of jobs running
 	que   JobQueue
 	group *Group
+}
+
+// API func to add new group with share.
+func AddUserAPI(out io.Writer, usr *user.User, args []string) error {
+	user := args[0]
+	group := GetGroup(args[1])
+	share, err := strconv.Atoi(args[2])
+	if err != nil {
+		return err
+	}
+	group.AddUser(user, share)
+	return nil
 }
 
 func (u *User) String() string {

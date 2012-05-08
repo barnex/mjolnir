@@ -10,14 +10,14 @@ const (
 )
 
 func Configure() {
-	dynamat := AddGroup("dynamat", 8)
-	dynamat.AddUser("arne", 3)
-	dynamat.AddUser("mykola", 3)
-	dynamat.AddUser("jonas", 1)
-	dynamat.AddUser("mathias", 1)
-
-	eelab := AddGroup("eelab", 1)
-	eelab.AddUser("ben", 1)
+	//	dynamat := AddGroup("dynamat", 8)
+	//	dynamat.AddUser("arne", 3)
+	//	dynamat.AddUser("mykola", 3)
+	//	dynamat.AddUser("jonas", 1)
+	//	dynamat.AddUser("mathias", 1)
+	//
+	//	eelab := AddGroup("eelab", 1)
+	//	eelab.AddUser("ben", 1)
 
 	//AddNode("localhost", "ssh", "localhost")
 	//	AddNode("zotac0", "ssh", "192.168.0.2")

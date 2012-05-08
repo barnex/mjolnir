@@ -17,10 +17,15 @@ type Group struct {
 // Add new group to global list and return it as well.
 func AddGroup(name string, share int) *Group {
 	group := &Group{name, share, []*User{}}
-	groups = append(groups, group)
+	groups[name] = group
 	return group
 }
 
+func GetGroup(name string) *Group {
+	return groups[name]
+}
+
+// API func to add new group with share.
 func AddGroupAPI(out io.Writer, usr *user.User, args []string) error {
 	group := args[0]
 	share, err := strconv.Atoi(args[1])
