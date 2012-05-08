@@ -52,22 +52,27 @@ func dialDaemon() *rpc.Client {
 	client, err := rpc.DialHTTP("tcp", "localhost"+Port)
 
 	// if daemon does not seem to be running, start him.
-	const SLEEP = 10e6 // nanoseconds
+	if SpawnDaemon {
+		const SLEEP = 10e6 // nanoseconds
+		if err != nil {
+			forkDaemon()
+			time.Sleep(SLEEP)
+		}
+
+		// try again to call the daemon,
+		// give him some time to come up.
+		trials := 0
+		for err != nil && trials < 10 {
+			client, err = rpc.DialHTTP("tcp", "localhost"+Port)
+			time.Sleep(SLEEP)
+			trials++
+		}
+	}
+
 	if err != nil {
-		forkDaemon()
-		time.Sleep(SLEEP)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-
-	// try again to call the daemon,
-	// give him some time to come up.
-	trials := 0
-	for err != nil && trials < 10 {
-		client, err = rpc.DialHTTP("tcp", "localhost"+Port)
-		time.Sleep(SLEEP)
-		trials++
-	}
-
-	Check(err)
 	return client
 }
 

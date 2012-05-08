@@ -49,4 +49,7 @@ func initMidgard() {
 
 	midgard.Api["adduser"] = AddUserAPI
 	midgard.Help["adduser"] = "Add a user to an existing group"
+
+	midgard.Api["config"] = Setv
+	midgard.Help["config"] = "Set configuration variables"
 }
