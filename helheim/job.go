@@ -71,5 +71,5 @@ func (j *Job) Walltime() time.Duration {
 }
 
 func (j *Job) Kill() {
-
+	j.cmd.Process.Kill()
 }
