@@ -7,6 +7,7 @@ import (
 // Priority queue for jobs.
 type JobQueue struct {
 	pq          priorityQueue
+	mp map[string]*Job
 	initialized bool
 }
 
@@ -23,6 +24,7 @@ func NewJobQueue() JobQueue {
 func (jq *JobQueue) init() {
 	jq.pq = make(priorityQueue, 0, DEFAULT_CAP)
 	heap.Init(&(jq.pq))
+	jq.mp = make(map[string]*Job)
 	jq.initialized = true
 }
 
@@ -36,7 +38,12 @@ func (jq *JobQueue) Push(job *Job) {
 	if !jq.initialized {
 		jq.init()
 	}
+	if prev, ok := jq.mp[job.file]; ok{
+		previndex = prev.index
+		*prev = *job
+	}else{
 	heap.Push(&(jq.pq), job)
+	}
 }
 
 // Pop the highest-priority job from the queue.

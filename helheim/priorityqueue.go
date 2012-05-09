@@ -18,6 +18,7 @@ func (pq priorityQueue) Less(i, j int) bool {
 }
 
 func (pq priorityQueue) Swap(i, j int) {
+	pq[i].index, pq[j].index = pq[j].index, pq[i].index
 	pq[i], pq[j] = pq[j], pq[i]
 }
 
@@ -29,6 +30,7 @@ func (pq *priorityQueue) Push(x interface{}) {
 	a := *pq
 	item := x.(*Job)
 	a = append(a, item)
+	item.index = len(a)-1
 	*pq = a
 }
 
@@ -36,7 +38,7 @@ func (pq *priorityQueue) Pop() interface{} {
 	a := *pq
 	n := len(a)
 	item := a[n-1]
-	//item.index = -1 // for safety
+	item.index = -1 // for safety
 	*pq = a[0 : n-1]
 	return item
 }

@@ -42,8 +42,6 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	if nicei != -1 {
 		args = append(args[:nicei], args[nicei+2:]...)
 	}
-	//	Debug("nice:", nice)
-	//	Debug("args:", args)
 
 	for _, arg := range args {
 		// TODO: duplicate job detection using map
