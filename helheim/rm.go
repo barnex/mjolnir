@@ -20,21 +20,22 @@ func Rm(out io.Writer, osUser *user.User, args []string) (err error) {
 	for _, arg := range args {
 		file := TranslatePath(arg)
 		job := usr.que.Find(file)
+		ok := false
 		if job != nil {
 			usr.que.Remove(job)
-		} else {
-			ok := false
-			for i,r := range running{
-				if r.file == arg{
+			ok = true
+		}
+		for i, r := range running {
+			if r.file == arg {
 				fmt.Fprintln(out, "kill", r)
 				running[i].Kill()
-				ok=true
+				ok = true
 				break
-}
 			}
-			if !ok{fmt.Fprintln(out, "no such job:", file)}
+		}
+		if !ok {
+			fmt.Fprintln(out, "no such job:", file)
 		}
 	}
-
 	return nil
 }
