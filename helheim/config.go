@@ -16,6 +16,7 @@ var (
 func Configure() {
 }
 
+// Set a config key-value pair
 func Setv(out io.Writer, usr *user.User, args []string) error {
 	key := args[0]
 	val := args[1:]
@@ -23,7 +24,7 @@ func Setv(out io.Writer, usr *user.User, args []string) error {
 	switch key {
 	default:
 		return errors.New("invalid key: " + key)
-	case "mumax2":
+	case "executable":
 		executable = val
 	case "muninn":
 		muninn = val[0]

@@ -57,7 +57,7 @@ func (rpc RPC) Call(argz Args, resp *string) (err error) {
 		}
 	}()
 
-	Debug("ServerRPC.Call", usr, args)
+	Debug("ServerRPC.Call", usr.Username, args)
 
 	if len(args) == 0 {
 		args = []string{"help"}

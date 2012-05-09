@@ -58,6 +58,8 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	return nil
 }
 
+// Translate path form headnode to compute node.
+// E.g.: /diskless/home/user/file.py -> /home/user/file.py
 func TranslatePath(file string) string {
 	if strings.HasPrefix(file, translate[0]) {
 		file = translate[1] + file[len(translate[0]):]
