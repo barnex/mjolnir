@@ -28,6 +28,14 @@ func (jq *JobQueue) init() {
 	jq.initialized = true
 }
 
+// Find a job by its filename
+func (jq *JobQueue) Find(file string) *Job {
+	if !jq.initialized {
+		jq.init()
+	}
+	return jq.mp[file]
+}
+
 // Length of the queue.
 func (jq *JobQueue) Len() int {
 	return jq.pq.Len()
@@ -58,4 +66,12 @@ func (jq *JobQueue) Pop() *Job {
 	job := heap.Pop(&(jq.pq)).(*Job)
 	delete(jq.mp, job.file)
 	return job
+}
+
+func (jq *JobQueue) Remove(job *Job) {
+	Debug("rm", job)
+	delete(jq.mp, job.file)
+	//if !ok{panic("JobQueue.Remove")}
+	heap.Remove(&(jq.pq), job.index)
+	job.index = -1
 }

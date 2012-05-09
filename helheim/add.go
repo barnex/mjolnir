@@ -44,7 +44,6 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	}
 
 	for _, arg := range args {
-		// TODO: duplicate job detection using map
 		file := TranslatePath(arg)
 		job := NewJob(usr, file)
 		job.priority = nice

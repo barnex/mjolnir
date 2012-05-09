@@ -36,7 +36,10 @@ func initMidgard() {
 	midgard.Help["nodes"] = "Print node info"
 
 	midgard.Api["add"] = Add
-	midgard.Help["add"] = "Add job"
+	midgard.Help["add"] = "Add input file to job queue"
+
+	midgard.Api["rm"] = Rm
+	midgard.Help["rm"] = "Remove input file from queue"
 
 	midgard.Api["status"] = Status
 	midgard.Help["status"] = "Show queue status"
