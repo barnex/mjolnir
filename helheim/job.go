@@ -69,3 +69,9 @@ func (j *Job) Walltime() time.Duration {
 	}
 	return j.stopTime.Sub(j.startTime)
 }
+
+
+
+func(j*Job)Kill(){
+
+}
