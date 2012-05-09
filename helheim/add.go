@@ -3,9 +3,7 @@ package helheim
 import (
 	"errors"
 	"io"
-	"os"
 	"os/user"
-	"path"
 	"strconv"
 	"strings"
 )
@@ -61,15 +59,8 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 }
 
 func TranslatePath(file string) string {
-	wd, err := os.Getwd()
-	if err != nil {
-		return file
-	}
-	if !path.IsAbs(file) {
-		file = wd + file
-		if strings.HasPrefix(file, translate[0]) {
-			return translate[1] + file[len(translate[0]):]
-		}
+	if strings.HasPrefix(file, translate[0]) {
+		file = translate[1] + file[len(translate[0]):]
 	}
 	return file
 }
