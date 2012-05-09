@@ -11,7 +11,7 @@ import (
 type Job struct {
 	priority  int       // User-defined job priority
 	id        int       // Unique job id
-	index int 			// Index in the priority queue (internal use)
+	index     int       // Index in the priority queue (internal use)
 	file      string    // Mumax input file
 	user      *User     // User who owns job
 	node      *Node     // Node assigned to job, if any yet
@@ -40,7 +40,7 @@ func NewJob(user *User, file string) *Job {
 
 func (j *Job) String() string {
 	wall := j.Walltime()
-	str1 := fmt.Sprintf("%05d %07d %-7s %02d %v %v", j.index,j.id, j.user, j.priority, formatDuration(wall), j.file)
+	str1 := fmt.Sprintf("%02d %07d %-7s %02d %v %v", j.index, j.id, j.user, j.priority, formatDuration(wall), j.file)
 	if j.node != nil {
 		str1 += fmt.Sprint(" ", j.node, j.dev)
 	}
@@ -50,8 +50,8 @@ func (j *Job) String() string {
 	return str1
 }
 
-func formatDuration(wall time.Duration)string{
-	return fmt.Sprintf("%02d:%02d:%02d",  int(wall.Hours()), int(wall.Minutes())%60, int(wall.Seconds())%60)
+func formatDuration(wall time.Duration) string {
+	return fmt.Sprintf("%02d:%02d:%02d", int(wall.Hours()), int(wall.Minutes())%60, int(wall.Seconds())%60)
 }
 
 // Working directory for job.

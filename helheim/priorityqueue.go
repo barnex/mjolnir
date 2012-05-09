@@ -30,7 +30,7 @@ func (pq *priorityQueue) Push(x interface{}) {
 	a := *pq
 	item := x.(*Job)
 	a = append(a, item)
-	item.index = len(a)-1
+	item.index = len(a) - 1
 	*pq = a
 }
 

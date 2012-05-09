@@ -24,7 +24,7 @@ func Status(out io.Writer) error {
 			continue
 		}
 		fmt.Fprintln(out, usr.que.Len(), "jobs queued for", usr, ":")
-		fmt.Fprintln(out, "  ID      USER    PR  TIME      FILE")
+		//fmt.Fprintln(out, "  ID      USER    PR  TIME      FILE")
 		for i, job := range usr.que.pq {
 			fmt.Fprintln(out, " ", job)
 			if i == STATUS_QUE_LEN {

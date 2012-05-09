@@ -7,7 +7,7 @@ import (
 // Priority queue for jobs.
 type JobQueue struct {
 	pq          priorityQueue
-	mp map[string]*Job
+	mp          map[string]*Job
 	initialized bool
 }
 
@@ -38,11 +38,15 @@ func (jq *JobQueue) Push(job *Job) {
 	if !jq.initialized {
 		jq.init()
 	}
-	if prev, ok := jq.mp[job.file]; ok{
-		previndex = prev.index
-		*prev = *job
-	}else{
-	heap.Push(&(jq.pq), job)
+	if prev, ok := jq.mp[job.file]; ok {
+		previndex := prev.index
+		previd := prev.id
+		*prev = *job           // overwrite existing job contents with new job
+		prev.index = previndex // but preserve index in priority queue!
+		prev.id = previd       // but preserve index in priority queue!
+	} else {
+		heap.Push(&(jq.pq), job) // push to heap
+		jq.mp[job.file] = job    // and map
 	}
 }
 
@@ -51,5 +55,7 @@ func (jq *JobQueue) Pop() *Job {
 	if !jq.initialized {
 		jq.init()
 	}
-	return heap.Pop(&(jq.pq)).(*Job)
+	job := heap.Pop(&(jq.pq)).(*Job)
+	delete(jq.mp, job.file)
+	return job
 }
