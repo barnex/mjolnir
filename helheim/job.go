@@ -24,7 +24,7 @@ type Job struct {
 
 const DEFAULT_PRIORITY = 0
 
-var idCounter = 1
+var idCounter = 1 // Creates unique job ids.
 
 // Job constructor.
 func NewJob(user *User, file string) *Job {
@@ -59,10 +59,12 @@ func (j *Job) Wd() string {
 	return path.Dir(j.file)
 }
 
+// Is this job running?
 func (j *Job) Running() bool {
 	return !j.startTime.IsZero() && j.stopTime.IsZero()
 }
 
+// How long has this job been running?
 func (j *Job) Walltime() time.Duration {
 	if j.Running() {
 		return time.Now().Sub(j.startTime)
@@ -70,6 +72,7 @@ func (j *Job) Walltime() time.Duration {
 	return j.stopTime.Sub(j.startTime)
 }
 
+// Kill the job process. The job will finish automatically.
 func (j *Job) Kill() {
 	j.cmd.Process.Kill()
 }
