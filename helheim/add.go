@@ -48,10 +48,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 
 	for _, arg := range args {
 		// TODO: duplicate job detection using map
-		file := arg
-		if path.IsAbs(file) {
-			file = prefix + file
-		}
+		file := TranslatePath(arg)
 		job := NewJob(usr, file)
 		job.priority = nice
 		usr.que.Push(job)
@@ -60,4 +57,11 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	FillNodes()
 
 	return nil
+}
+
+func TranslatePath(file string)string{
+		if path.IsAbs(file) && strings.HasPrefix(file, translate[0]){
+			return translate[1] + file[len(translate[0]):]
+		}
+		return file
 }
