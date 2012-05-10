@@ -5,6 +5,7 @@ import (
 	"io"
 	"os/user"
 	"strconv"
+	"errors"
 )
 
 // Cluster user.
@@ -20,6 +21,9 @@ type User struct {
 func AddUserAPI(out io.Writer, usr *user.User, args []string) error {
 	user := args[0]
 	group := GetGroup(args[1])
+	if group == nil{
+		return errors.New("no such group: " + args[1])
+	}
 	share, err := strconv.Atoi(args[2])
 	if err != nil {
 		return err
