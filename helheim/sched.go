@@ -8,12 +8,13 @@ import (
 )
 
 var (
-	lock    sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
-	nodes   []*Node
-	groups  = make(map[string]*Group)
-	users   = make(map[string]*User) // Username -> User map.
-	running JobList
-	done    JobList
+	lock      sync.Mutex // Protects scheduler state, pointer passed to midgard front-end
+	nodes     []*Node
+	groups    = make(map[string]*Group)
+	users     = make(map[string]*User) // Username -> User map.
+	running   JobList
+	done      JobList
+	donecount = 0
 )
 
 // Start as many jobs as possible.
@@ -77,7 +78,13 @@ func Undispatch(job *Job) {
 	job.user.use -= len(job.dev)
 
 	running.Remove(job)
+
+	// Save the last few finished jobs
+	donecount++
 	done.Append(job)
+	if len(done) > STATUS_DONE_LEN {
+		done = done[len(done)-STATUS_DONE_LEN : len(done)]
+	}
 	FillNodes()
 }
 

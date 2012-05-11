@@ -7,7 +7,7 @@ import (
 
 const (
 	STATUS_QUE_LEN  = 10 // show this many entries in queue status list
-	STATUS_DONE_LEN = 10 // show this many entries in done status list
+	STATUS_DONE_LEN = 20 // show this many entries in done status list
 )
 
 // API func, prints job info.
@@ -35,15 +35,15 @@ func Status(out io.Writer) error {
 	}
 
 	// done
-	if len(done) > 0 {
-		fmt.Fprintln(out, len(done), "jobs finished:")
+	if donecount > 0 {
+		fmt.Fprintln(out, donecount, "jobs finished:")
 	}
-	for i, job := range done {
-		fmt.Fprintln(out, " ", job)
-		if i == STATUS_DONE_LEN {
-			fmt.Fprintln(out, "...")
-			break
-		}
+	start := len(done) - 1
+	for i := start; i >= 0; i-- {
+		fmt.Fprintln(out, " ", done[i])
+	}
+	if donecount > STATUS_DONE_LEN {
+		fmt.Fprintln(out, "...")
 	}
 	return nil
 }
