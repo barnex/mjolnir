@@ -34,6 +34,7 @@ func MainClient(args []string) {
 		fmt.Fprint(os.Stderr, cleanup(err.Error()))
 	}
 	fmt.Print(cleanup(resp))
+	client.Close() // ignore error
 }
 
 // cleanup newlines so string can be printed to stdout without redundant/missing newlines
