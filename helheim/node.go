@@ -31,26 +31,34 @@ func AddNodeAPI(out io.Writer, user *user.User, args []string) error {
 	return err
 }
 
+// Ask for node auto config.
 func (n *Node) Autoconf() {
-	// Ask for node auto config.
+	Debug("auto configuring", n.name)
+
+	// clear previous state
+	n.err = nil
+	n.devices = nil
+
+	// fetch info
 	var info NodeInfo
 	bytes, err := n.Exec("", muninn)
-	if err == nil {
-		Check(json.Unmarshal(bytes, &info))
-		Debug("muninn says: ", info)
-	} else {
-		info.ErrorString = fmt.Sprint(err, ": ", string(bytes))
+	if err != nil {
+		n.err = errors.New(fmt.Sprint(err, ": ", string(bytes)))
+		return
 	}
 
-	// Store received config info.
-	if info.ErrorString != "" {
-		n.err = errors.New(info.ErrorString)
-	}
-	//Debug("len(info.Devices))", len(info.Devices))
+	// unmarshal and store info
+	Check(json.Unmarshal(bytes, &info))
 	n.devices = make([]*Device, len(info.Devices))
 	for i, dev := range info.Devices {
-		//Debug("dev", i, dev)
 		n.devices[i] = &Device{dev.Name, dev.TotalMem, false, false}
+	}
+
+	// Check if mumax works
+	bytes, err = n.Exec("", executable[0], append(executable[1:], "-v")...)
+	if err != nil {
+		n.err = errors.New(fmt.Sprint(err, ": ", string(bytes)))
+		return
 	}
 }
 
@@ -58,7 +66,7 @@ func (n *Node) Autoconf() {
 func (n *Node) Exec(wd string, command string, args ...string) (output []byte, err error) {
 	cmd := n.Cmd(wd, command, args...)
 	output, err = cmd.CombinedOutput()
-	Debug(string(output))
+	//Debug(string(output))
 	return
 }
 

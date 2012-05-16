@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"sync"
+	"syscall"
 	"time"
 )
 
@@ -59,18 +60,10 @@ func Dispatch(job *Job, node *Node, dev []int) {
 	// Actually run the job
 }
 
-//func Exec(job *Job) {
-//	_, err := job.node.Exec(job.Wd(), MUMAX2, job.file)
-//
-//	lock.Lock()
-//	defer lock.Unlock()
-//
-//	job.err = err
-//	Undispatch(job)
-//}
 
 func Undispatch(job *Job) {
 	Debug("undispatch", job)
+
 	job.stopTime = time.Now()
 	for _, d := range job.dev {
 		job.node.devices[d].busy = false
@@ -85,12 +78,29 @@ func Undispatch(job *Job) {
 	if len(done) > STATUS_DONE_LEN {
 		done = done[len(done)-STATUS_DONE_LEN : len(done)]
 	}
+
+	// Handle failed job
+	state := job.cmd.ProcessState
+	if !state.Success() {
+		sys := state.Sys().(syscall.WaitStatus)
+		if IsNodeProblem(sys.ExitStatus()) {
+			job.node.Autoconf()
+			//Requeue(job)
+		}
+	}
+
 	FillNodes()
+}
+
+// 
+func IsNodeProblem(exitstatus int) bool {
+	return exitstatus == 255 || exitstatus == 127
 }
 
 // Find a device and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {
 	for _, n := range nodes {
+		if n.err != nil{continue}
 		for i, d := range n.devices {
 			if !d.busy {
 				return n, []int{i}

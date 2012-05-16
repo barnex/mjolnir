@@ -45,7 +45,7 @@ func (j *Job) String() string {
 		str1 += fmt.Sprint(" ", j.node, j.dev)
 	}
 	if j.err != nil {
-		str1 += fmt.Sprintf("%V" , j.err)
+		str1 += fmt.Sprint(" ", j.err)
 	}
 	return str1
 }
