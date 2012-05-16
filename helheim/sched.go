@@ -33,7 +33,7 @@ func FillNodes() {
 
 // Start a job on a node
 func Dispatch(job *Job, node *Node, dev []int) {
-	Debug("dispatch", job)
+	Debug("dispatch", job, "to", node, dev)
 
 	// Bookkeeping
 	job.node = node
@@ -46,8 +46,14 @@ func Dispatch(job *Job, node *Node, dev []int) {
 
 	running.Append(job)
 
-	//job.cmd = job.node.Cmd(job.Wd(), executable[0], append(executable[1:], job.file)...)
-	job.cmd = job.node.Cmd("", executable[0], append(executable[1:], job.file)...)
+	// setup -gpu=i,j,k flag
+	// TODO: make mumax-independent.
+	gpuflag := fmt.Sprint("-gpu=", job.dev[0])
+	for i := 1; i < len(job.dev); i++ {
+		gpuflag = fmt.Sprint(gpuflag, ",", job.dev[i])
+	}
+
+	job.cmd = job.node.Cmd("", executable[0], append(executable[1:], gpuflag, job.file)...)
 
 	go func() {
 		out, err := job.cmd.CombinedOutput()
@@ -59,7 +65,6 @@ func Dispatch(job *Job, node *Node, dev []int) {
 	}()
 	// Actually run the job
 }
-
 
 func Undispatch(job *Job) {
 	Debug("undispatch", job)
@@ -100,7 +105,9 @@ func IsNodeProblem(exitstatus int) bool {
 // Find a device and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {
 	for _, n := range nodes {
-		if n.err != nil{continue}
+		if n.err != nil {
+			continue
+		}
 		for i, d := range n.devices {
 			if !d.busy {
 				return n, []int{i}
