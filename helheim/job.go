@@ -40,7 +40,7 @@ func NewJob(user *User, file string) *Job {
 
 func (j *Job) String() string {
 	wall := j.Walltime()
-	str1 := fmt.Sprintf("%02d %07d %-7s %02d %v %v", j.index, j.id, j.user, j.priority, formatDuration(wall), j.file)
+	str1 := fmt.Sprintf("%07d %-7s %02d %v %v", j.id, j.user, j.priority, formatDuration(wall), j.file)
 	if j.node != nil {
 		str1 += fmt.Sprint(" ", j.node, j.dev)
 	}
