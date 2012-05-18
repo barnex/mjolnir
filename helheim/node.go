@@ -37,7 +37,7 @@ func (n *Node) Autoconf() {
 
 	// clear previous state
 	n.err = nil
-	n.devices = nil
+	n.devices = make([]*Device, 0)
 
 	// fetch info
 	var info NodeInfo
