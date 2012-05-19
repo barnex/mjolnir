@@ -79,14 +79,7 @@ func Undispatch(job *Job) {
 	running.Remove(job)
 
 	if job.requeue {
-		var zero time.Time
-		//job.RmOut()
-		job.requeue = false
-		job.startTime = zero
-		job.stopTime = zero
-		job.node = nil
-		job.dev = nil
-		job.user.que.Push(job)
+		requeue(job)
 		return
 	}
 
@@ -102,13 +95,25 @@ func Undispatch(job *Job) {
 	// Handle failed job
 	state := job.cmd.ProcessState
 	if !state.Success() {
+		// On node trouble, reconfigure the node and requeue the job
 		sys := state.Sys().(syscall.WaitStatus)
 		if IsNodeProblem(sys.ExitStatus()) {
 			job.node.Autoconf()
-			//Requeue(job)
+			requeue(job)
 		}
+		//TODO
 	}
 
+}
+
+func requeue(job *Job) {
+	var zero time.Time
+	job.requeue = false
+	job.startTime = zero
+	job.stopTime = zero
+	job.node = nil
+	job.dev = nil
+	job.user.que.Push(job)
 }
 
 // Reports if the job exit status signals a problem with the node itself.
