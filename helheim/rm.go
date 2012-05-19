@@ -19,7 +19,7 @@ func Rm(out io.Writer, osUser *user.User, args []string) (err error) {
 
 	for _, arg := range args {
 		file := TranslatePath(arg)
-		job := usr.que.Find(file)
+		job := usr.que.ByFilename(file)
 		ok := false
 		if job != nil {
 			usr.que.Remove(job)
