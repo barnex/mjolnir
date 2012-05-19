@@ -26,7 +26,7 @@ func Rm(out io.Writer, osUser *user.User, args []string) (err error) {
 			ok = true
 		}
 		for i, r := range running {
-			if r.file == arg {
+			if r.file == file {
 				fmt.Fprintln(out, "kill", r)
 				running[i].Kill()
 				ok = true

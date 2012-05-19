@@ -8,7 +8,7 @@ const (
 	SECOND       = 1e9
 	HOUR         = 3600 * SECOND
 	HEARTBEAT    = 60 * SECOND
-	MAX_WALLTIME = 24 * HOUR
+	MAX_WALLTIME = 24 * HOUR // jobs get killed after running this long
 )
 
 func RunHeartbeat() {
