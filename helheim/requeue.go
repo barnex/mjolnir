@@ -8,22 +8,23 @@ import (
 )
 
 // API func, adds job.
-func Rm(out io.Writer, osUser *user.User, args []string) (err error) {
+func Requeue(out io.Writer, osUser *user.User, args []string) (err error) {
 	// Setup and check user
 	username := osUser.Username
 	usr, usrOk := users[username]
 	if !usrOk {
 		return errors.New("unknown username: " + username)
 	}
-	Debug(usr.name, "rm", args)
+	Debug(usr.name, "requeue", args)
 
 	for _, arg := range args {
 		file := TranslatePath(arg)
 		ok := false
 		for i, r := range running {
 			if r.file == file {
-				fmt.Fprintln(out, "kill", r)
-				running[i].Kill()
+				Debug("requeue", r)
+				fmt.Fprintln(out, "requeue", r)
+				running[i].Requeue()
 				ok = true
 				break
 			}
@@ -32,6 +33,6 @@ func Rm(out io.Writer, osUser *user.User, args []string) (err error) {
 			fmt.Fprintln(out, "no such job:", file)
 		}
 	}
-	//	FillNodes()
+	//FillNodes()
 	return nil
 }

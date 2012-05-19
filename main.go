@@ -31,7 +31,7 @@ func main() {
 	// Client mode: stay in the realm of the humans
 	args := flag.Args()
 	if len(args) > 1 {
-		if args[0] == "add" || args[0] == "rm"{
+		if args[0] == "add" || args[0] == "rm" || args[0] == "requeue"{
 			ExpandFiles(args[1:])
 		}
 	}

@@ -20,6 +20,7 @@ type Job struct {
 	cmd       *exec.Cmd // Command executing the job
 	startTime time.Time // Walltime when job was started
 	stopTime  time.Time // Walltime when job was stoped
+	requeue   bool
 }
 
 const DEFAULT_PRIORITY = 0
@@ -75,4 +76,10 @@ func (j *Job) Walltime() time.Duration {
 // Kill the job process. The job will finish automatically.
 func (j *Job) Kill() {
 	j.cmd.Process.Kill()
+}
+
+func (j *Job) Requeue() {
+	j.requeue = true
+	j.Kill()
+	Debug("rm output dir", exec.Command("rm", "-rf", j.file+".out").Run())
 }

@@ -55,4 +55,7 @@ func initMidgard() {
 
 	midgard.Api["config"] = Setv
 	midgard.Help["config"] = "Set configuration variables"
+
+	midgard.Api["requeue"] = Requeue
+	midgard.Help["requeue"] = "Kill a job and re-queue it for later"
 }

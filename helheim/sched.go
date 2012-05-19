@@ -69,14 +69,28 @@ func Dispatch(job *Job, node *Node, dev []int) {
 // Handle a finished job.
 func Undispatch(job *Job) {
 	Debug("undispatch", job)
+	defer FillNodes()
 
-	job.stopTime = time.Now()
 	for _, d := range job.dev {
 		job.node.devices[d].busy = false
 	}
 	job.user.use -= len(job.dev)
 
 	running.Remove(job)
+
+	if job.requeue {
+		var zero time.Time
+		//job.RmOut()
+		job.requeue = false
+		job.startTime = zero
+		job.stopTime = zero
+		job.node = nil
+		job.dev = nil
+		job.user.que.Push(job)
+		return
+	}
+
+	job.stopTime = time.Now()
 
 	// Save the last few finished jobs
 	donecount++
@@ -95,7 +109,6 @@ func Undispatch(job *Job) {
 		}
 	}
 
-	FillNodes()
 }
 
 // Reports if the job exit status signals a problem with the node itself.
