@@ -55,6 +55,7 @@ func Dispatch(job *Job, node *Node, dev []int) {
 
 	job.cmd = job.node.Cmd("", executable[0], append(executable[1:], gpuflag, job.file)...)
 
+	// Actually run the job
 	go func() {
 		out, err := job.cmd.CombinedOutput()
 		Debug(string(out)) // TODO
@@ -63,9 +64,9 @@ func Dispatch(job *Job, node *Node, dev []int) {
 		Undispatch(job)
 		lock.Unlock()
 	}()
-	// Actually run the job
 }
 
+// Handle a finished job.
 func Undispatch(job *Job) {
 	Debug("undispatch", job)
 
@@ -97,12 +98,13 @@ func Undispatch(job *Job) {
 	FillNodes()
 }
 
-// 
+// Reports if the job exit status signals a problem with the node itself.
+// In that case, the node will need to be re-configured or rebooted.
 func IsNodeProblem(exitstatus int) bool {
 	return exitstatus == 255 || exitstatus == 127
 }
 
-// Find a device and GPU id(s) suited for the job.
+// Find a node and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {
 	for _, n := range nodes {
 		if n.err != nil {
@@ -117,7 +119,7 @@ func FindDevice(job *Job) (node *Node, dev []int) {
 	return nil, nil
 }
 
-// Is a computing device available?
+// Is there any computing device available?
 func DevAvailable() bool {
 	for _, n := range nodes {
 		for _, d := range n.devices {
