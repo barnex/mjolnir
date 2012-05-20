@@ -1,7 +1,6 @@
 package helheim
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os/user"
@@ -9,12 +8,7 @@ import (
 
 // API func, adds job.
 func Rm(out io.Writer, osUser *user.User, args []string) (err error) {
-	// Setup and check user
-	username := osUser.Username
-	usr, usrOk := users[username]
-	if !usrOk {
-		return errors.New("unknown username: " + username)
-	}
+	usr := GetUser(osUser.Username)
 	Debug(usr.name, "rm", args)
 
 	for _, arg := range args {

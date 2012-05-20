@@ -30,6 +30,8 @@ func Setv(out io.Writer, usr *user.User, args []string) error {
 		muninn = val[0]
 	case "translate":
 		translate = []string{val[0], val[1]}
+	case "email":
+
 	}
 	return nil
 }

@@ -10,12 +10,7 @@ import (
 
 // API func, adds job.
 func Add(out io.Writer, osUser *user.User, args []string) (err error) {
-	// Setup and check user
-	username := osUser.Username
-	usr, ok := users[username]
-	if !ok {
-		return errors.New("unknown username: " + username)
-	}
+	usr := GetUser(osUser.Username)
 	Debug(usr.name, "add", args)
 
 	// Parse "-pr" flag

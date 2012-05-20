@@ -15,6 +15,7 @@ type User struct {
 	use   int // Current number of jobs running
 	que   JobQueue
 	group *Group
+	Mailbox
 }
 
 // API func to add new group with share.
@@ -52,4 +53,12 @@ func Users(out io.Writer) error {
 		fmt.Fprintln(out, u)
 	}
 	return nil
+}
+
+func GetUser(username string) *User {
+	usr, ok := users[username]
+	if !ok {
+		panic(errors.New("unknown username: " + username))
+	}
+	return usr
 }

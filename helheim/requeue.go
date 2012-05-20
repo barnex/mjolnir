@@ -1,20 +1,15 @@
 package helheim
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os/user"
 )
 
-// API func, adds job.
+// API func, kills job and adds it to the queue again.
 func Requeue(out io.Writer, osUser *user.User, args []string) (err error) {
 	// Setup and check user
-	username := osUser.Username
-	usr, usrOk := users[username]
-	if !usrOk {
-		return errors.New("unknown username: " + username)
-	}
+	usr := GetUser(osUser.Username)
 	Debug(usr.name, "requeue", args)
 
 	for _, arg := range args {

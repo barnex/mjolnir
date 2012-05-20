@@ -41,7 +41,7 @@ func (g *Group) AddUser(name string, share int) {
 	if _, ok := users[name]; ok {
 		panic("user " + name + " already added")
 	}
-	user := &User{name, share, 0, NewJobQueue(), g}
+	user := &User{name, share, 0, NewJobQueue(), g, Mailbox{"", ""}}
 	g.users = append(g.users, user)
 	users[name] = user
 }
