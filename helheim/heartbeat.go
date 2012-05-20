@@ -10,7 +10,7 @@ const (
 	HOUR                  = 60 * MINUTE
 	HEARTBEAT             = 1 * SECOND
 	MAX_WALLTIME          = 24 * HOUR  // jobs get killed after running this long
-	MAIL_AGGREGATION_TIME = 10 * SECOND // aggregate mail messages for this long
+	MAIL_AGGREGATION_TIME = 1 *  SECOND // aggregate mail messages for this long
 )
 
 func RunHeartbeat() {

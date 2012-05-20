@@ -20,7 +20,7 @@ func (m *Mailbox) Walltime() time.Duration {
 }
 
 func (m *Mailbox) Println(message ...interface{}) {
-	m.message += fmt.Sprintln(time.Now(), ":", fmt.Sprint(message...))
+	m.message += fmt.Sprint(time.Now(), ": ", fmt.Sprintln(message...))
 	if m.firstpost.IsZero() {
 		m.firstpost = time.Now()
 	}

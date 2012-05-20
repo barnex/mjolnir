@@ -95,6 +95,7 @@ func Undispatch(job *Job) {
 	// Handle failed job
 	state := job.cmd.ProcessState
 	if !state.Success() {
+		job.user.mailbox.Println("FAIL", job)
 		// On node trouble, reconfigure the node and requeue the job
 		sys := state.Sys().(syscall.WaitStatus)
 		if IsNodeProblem(sys.ExitStatus()) {
@@ -102,6 +103,10 @@ func Undispatch(job *Job) {
 			requeue(job)
 		}
 		//TODO
+	}
+
+	if job.user.que.Len() == 0{
+		job.user.mailbox.Println("QUEUE EMPTY")
 	}
 
 }
