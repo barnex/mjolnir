@@ -31,7 +31,8 @@ func Setv(out io.Writer, usr *user.User, args []string) error {
 	case "translate":
 		translate = []string{val[0], val[1]}
 	case "email":
-
+		usr := GetUser(args[0])
+		usr.email = args[1]
 	}
 	return nil
 }
