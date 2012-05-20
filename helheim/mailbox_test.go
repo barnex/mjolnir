@@ -1,8 +1,10 @@
 package helheim
 
-import("testing")
+import (
+	"testing"
+)
 
-func TestMail(t*testing.T){
-	box:=Mailbox{"Arne.Vansteenkiste@UGent.be", []string{"hello mail!"}}
+func TestMail(t *testing.T) {
+	box := Mailbox{"Arne.Vansteenkiste@UGent.be", "hello mail!"}
 	box.Sendmail()
 }

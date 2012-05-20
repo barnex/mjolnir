@@ -1,23 +1,27 @@
 package helheim
 
-import(
+import (
 	"os/exec"
 )
 
-type Mailbox struct{
+type Mailbox struct {
 	receipient string
-	messages []string
+	message    string
 }
 
-func (m*Mailbox)Sendmail(){
-	sendmail := exec.Command("sendmail", m.receipient)	
+func (m *Mailbox) Sendmail() {
+	defer func() {
+		err := recover()
+		if err != nil {
+			Debug(err)
+		}
+	}()
+	sendmail := exec.Command("sendmail", m.receipient)
 	stdin, _ := sendmail.StdinPipe()
 	Check(sendmail.Start())
-	for _,msg:=range m.messages{
-		_, err := stdin.Write(([]byte)(msg))
-		Check(err)
-	}
+	_, err := stdin.Write(([]byte)(m.message))
+	Check(err)
 	Check(stdin.Close())
 	Check(sendmail.Wait())
-	m.messages = []string{}
+	m.message = ""
 }
