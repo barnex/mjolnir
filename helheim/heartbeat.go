@@ -10,7 +10,7 @@ const (
 	HOUR                  = 60 * MINUTE
 	HEARTBEAT             = 10 * SECOND
 	MAX_WALLTIME          = 24 * HOUR  // jobs get killed after running this long
-	MAIL_AGGREGATION_TIME = 10 *  SECOND // aggregate mail messages for this long
+	MAIL_AGGREGATION_TIME = 1 * MINUTE // aggregate mail messages for this long
 )
 
 func RunHeartbeat() {
@@ -42,7 +42,7 @@ func checkMail() {
 	for _, usr := range users {
 		// time between mails grows linearly over time, to avoid spamming.
 		// mjolnir status resets time.
-		if usr.mailbox.Walltime() > time.Duration(int64(usr.mailbox.nSend) * MAIL_AGGREGATION_TIME) {
+		if usr.mailbox.Walltime() > time.Duration(int64(usr.mailbox.nSend)*MAIL_AGGREGATION_TIME) {
 			usr.mailbox.Sendmail()
 		}
 	}

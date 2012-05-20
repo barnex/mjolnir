@@ -105,7 +105,7 @@ func Undispatch(job *Job) {
 		//TODO
 	}
 
-	if job.user.que.Len() == 0{
+	if job.user.que.Len() == 0 {
 		job.user.mailbox.Println("QUEUE EMPTY")
 	}
 

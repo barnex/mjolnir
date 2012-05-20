@@ -10,7 +10,7 @@ type Mailbox struct {
 	email     string // send to this address
 	message   string
 	firstpost time.Time // timestamp of first Posted message
-	nSend int
+	nSend     int
 }
 
 func (m *Mailbox) Walltime() time.Duration {
@@ -41,7 +41,7 @@ func (m *Mailbox) Sendmail() {
 		return
 	}
 
-	Debug("sendmail", m.email, m.message)
+	//Debug("sendmail", m.email, m.message)
 	sendmail := exec.Command("mail", "-s", "[ragnarok] status", m.email)
 	stdin, _ := sendmail.StdinPipe()
 	Check(sendmail.Start())

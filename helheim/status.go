@@ -16,7 +16,7 @@ func Status(out io.Writer, osUser *user.User) error {
 
 	// Status check clears mailbox.
 	// We don't want to mail what the user has already seen.
-	usr:=GetUser(osUser.Username)
+	usr := GetUser(osUser.Username)
 	usr.mailbox.Clear()
 	usr.mailbox.nSend = 0
 
