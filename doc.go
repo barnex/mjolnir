@@ -7,7 +7,7 @@
 		mjolnir -d
 	which starts the mjolnir daemon. 
 	This listens for non-daemon mjolnir processes over TCP.
-	
+
 	Then add compute nodes and specify a login command:
 		mjolnir addnode mybox ssh 127.0.0.1
 		mjolnir addnode bigserver ssh 192.168.0.1
@@ -44,11 +44,11 @@
 	Prints all available commands.
 
 	Adding input files to the queue is done with the "add" command. Wildcards can be used as they are expanded by the shell. Priorities can be set with the -pr flag. Files with higher priority will run first. If the same file is added twice, it will only be in the queue once. However, adding an already present file may be used to change its priority.
-	
+
 		mjolnir add file1.py
 		mjolnir add *.py
 		mjolnir add file1.py -pr 10 # changes priority of file1.py
-	
+
 	Files can be removed from the queue with
 		mjolnir rm file1.py
 	Removing a running file will kill the compute job.
@@ -56,6 +56,6 @@
 	Watch the queue status with:
 		mjolnir status
 
-		
+
 */
 package main
