@@ -5,11 +5,12 @@ import (
 )
 
 func TestMail(t *testing.T) {
-	box := Mailbox{"Arne.Vansteenkiste@UGent.be", ""}
-	box.Post("test1")
-	box.Post("test2")
+	var box Mailbox
+	box.email = "Arne.Vansteenkiste@UGent.be"
+	box.Println("test1")
+	box.Println("test2")
 	box.Sendmail()
-	box.Post("test3")
+	box.Println("test3")
 	box.Sendmail()
 	box.Clear()
 	box.Sendmail()

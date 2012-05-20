@@ -6,4 +6,5 @@ mjolnir config executable /home/arne/mumax2.git/bin/mumax2 -s
 mjolnir addnode localhost ssh localhost
 mjolnir addgroup local 1
 mjolnir adduser arne local 1
+mjolnir config email arne Arne.Vansteenkiste@UGent.be
 mjolnir nodes

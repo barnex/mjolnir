@@ -39,7 +39,8 @@ func (m *Mailbox) Sendmail() {
 		return
 	}
 
-	sendmail := exec.Command("sendmail", m.email)
+	Debug("sendmail", m.email, m.message)
+	sendmail := exec.Command("mail", "-s", "[ragnarok] status", m.email)
 	stdin, _ := sendmail.StdinPipe()
 	Check(sendmail.Start())
 	_, err := stdin.Write(([]byte)(m.message))
