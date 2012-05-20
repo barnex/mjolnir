@@ -10,6 +10,7 @@ type Mailbox struct {
 	email     string // send to this address
 	message   string
 	firstpost time.Time // timestamp of first Posted message
+	nSend int
 }
 
 func (m *Mailbox) Walltime() time.Duration {
@@ -29,6 +30,7 @@ func (m *Mailbox) Println(message ...interface{}) {
 func (m *Mailbox) Sendmail() {
 	defer func() {
 		m.Clear()
+		m.nSend++
 		err := recover()
 		if err != nil {
 			Debug(err)

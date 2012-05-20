@@ -3,6 +3,7 @@ package helheim
 import (
 	"fmt"
 	"io"
+	"os/user"
 )
 
 const (
@@ -11,7 +12,14 @@ const (
 )
 
 // API func, prints job info.
-func Status(out io.Writer) error {
+func Status(out io.Writer, osUser *user.User) error {
+
+	// Status check clears mailbox.
+	// We don't want to mail what the user has already seen.
+	usr:=GetUser(osUser.Username)
+	usr.mailbox.Clear()
+	usr.mailbox.nSend = 0
+
 	// running
 	fmt.Fprintln(out, len(running), "jobs running:")
 	for _, job := range running {
