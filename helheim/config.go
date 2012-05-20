@@ -32,7 +32,8 @@ func Setv(out io.Writer, usr *user.User, args []string) error {
 		translate = []string{val[0], val[1]}
 	case "email":
 		usr := GetUser(args[0])
-		usr.email = args[1]
+		usr.mailbox.email = args[1]
+		usr.mailbox.Println("You are set-up to receive queue status e-mail notifications.")
 	}
 	return nil
 }

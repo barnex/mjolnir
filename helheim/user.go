@@ -10,12 +10,12 @@ import (
 
 // Cluster user.
 type User struct {
-	name  string
-	share int // Relative group share of the user
-	use   int // Current number of jobs running
-	que   JobQueue
-	group *Group
-	Mailbox
+	name    string
+	share   int // Relative group share of the user
+	use     int // Current number of jobs running
+	que     JobQueue
+	group   *Group
+	mailbox Mailbox
 }
 
 // API func to add new group with share.

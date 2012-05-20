@@ -5,10 +5,12 @@ import (
 )
 
 const (
-	SECOND       = 1e9
-	HOUR         = 3600 * SECOND
-	HEARTBEAT    = 60 * SECOND
-	MAX_WALLTIME = 24 * HOUR // jobs get killed after running this long
+	SECOND                = 1e9
+	MINUTE                = 60 * SECOND
+	HOUR                  = 60 * MINUTE
+	HEARTBEAT             = 5 * SECOND
+	MAX_WALLTIME          = 24 * HOUR  // jobs get killed after running this long
+	MAIL_AGGREGATION_TIME = 1 * MINUTE // aggregate mail messages for this long
 )
 
 func RunHeartbeat() {
@@ -21,11 +23,24 @@ func RunHeartbeat() {
 }
 
 func heartbeat() {
-	//Debug("tick")
+	checkWalltime()
+	checkMail()
+}
+
+// Kill jobs that have been running too long.
+func checkWalltime() {
 	for _, j := range running {
 		if j.Walltime() > MAX_WALLTIME {
 			Debug("max walltime reached for ", j)
 			j.Kill()
+		}
+	}
+}
+
+func checkMail() {
+	for _, usr := range users {
+		if usr.mailbox.Walltime() > MAIL_AGGREGATION_TIME {
+			usr.mailbox.Sendmail()
 		}
 	}
 }
