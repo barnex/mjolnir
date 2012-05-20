@@ -109,6 +109,12 @@ func (rpc RPC) Call(argz Args, resp *string) (err error) {
 		} else {
 			err = fnc(out, usr, args)
 		}
+	case func(io.Writer, *user.User) error:
+		if len(args) != 0 {
+			err = NewError(cmd, ": does not take arguments")
+		} else {
+			err = fnc(out, usr)
+		}
 	}
 	*resp = string(out.Bytes())
 	return
