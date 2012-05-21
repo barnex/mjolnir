@@ -27,6 +27,12 @@ func FillNodes() {
 		} // no jobs queued 
 		job := usr.que.Pop()
 		node, devid := FindDevice(job)
+		// no suited node/devs.
+		// TODO: job with too high GPUs will block everything!
+		if node == nil {
+			usr.que.Push(job)
+			return
+		}
 		Dispatch(job, node, devid)
 	}
 }
@@ -129,13 +135,21 @@ func IsNodeProblem(exitstatus int) bool {
 
 // Find a node and GPU id(s) suited for the job.
 func FindDevice(job *Job) (node *Node, dev []int) {
-	for _, n := range nodes {
-		if n.err != nil {
+	dev = make([]int, job.gpus)
+
+	for _, node = range nodes {
+		found := 0
+		// skip broken node
+		if node.err != nil {
 			continue
 		}
-		for i, d := range n.devices {
+		for i, d := range node.devices {
 			if !d.busy {
-				return n, []int{i}
+				dev[found] = i
+				found++
+				if found == job.gpus {
+					return
+				}
 			}
 		}
 	}
