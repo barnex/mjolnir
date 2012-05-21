@@ -10,6 +10,7 @@ import (
 // Compute job.
 type Job struct {
 	priority  int       // User-defined job priority
+	gpus      int       // User-defined number of GPUs for the job
 	id        int       // Unique job id
 	index     int       // Index in the priority queue (internal use)
 	file      string    // Mumax input file
@@ -31,6 +32,7 @@ var idCounter = 1 // Creates unique job ids.
 func NewJob(user *User, file string) *Job {
 	job := new(Job)
 	job.priority = DEFAULT_PRIORITY
+	job.gpus = 1
 	job.id = idCounter
 	idCounter++
 	job.file = file
@@ -42,6 +44,9 @@ func NewJob(user *User, file string) *Job {
 func (j *Job) String() string {
 	wall := j.Walltime()
 	str1 := fmt.Sprintf("%07d %-7s %02d %v %v", j.id, j.user, j.priority, formatDuration(wall), j.file)
+	if j.gpus > 1 {
+		str1 += fmt.Sprint(" ", j.gpus, "GPUs ")
+	}
 	if j.node != nil {
 		str1 += fmt.Sprint(" ", j.node, j.dev)
 	}

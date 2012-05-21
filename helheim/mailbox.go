@@ -2,6 +2,7 @@ package helheim
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"time"
 )
@@ -42,7 +43,8 @@ func (m *Mailbox) Sendmail() {
 	}
 
 	//Debug("sendmail", m.email, m.message)
-	sendmail := exec.Command("mail", "-s", "[ragnarok] status", m.email)
+	host, _ := os.Hostname()
+	sendmail := exec.Command("mail", "-s", "[mjolnir] "+host+" queue status", m.email)
 	stdin, _ := sendmail.StdinPipe()
 	Check(sendmail.Start())
 	_, err := stdin.Write(([]byte)(m.message))

@@ -16,17 +16,26 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	if err != nil {
 		return
 	}
-	Debug("add", args, "pr", nice)
+
+	gpus := 0
+	args, gpus, err = ParseFlag(args, "-gpus")
+	if gpus < 1 {
+		gpus = 1
+	}
+	if err != nil {
+		return
+	}
+
 	err = CheckNoMoreFlags(args)
 	if err != nil {
 		return
 	}
 
-	Debug("add", args, "pr", nice)
 	for _, arg := range args {
 		file := TranslatePath(arg)
 		job := NewJob(usr, file)
 		job.priority = nice
+		job.gpus = gpus
 		usr.que.Push(job)
 	}
 
