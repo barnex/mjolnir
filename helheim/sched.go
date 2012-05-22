@@ -77,6 +77,7 @@ func Undispatch(job *Job) {
 	Debug("undispatch", job)
 	defer FillNodes()
 
+	// TODO: problematic if node has been reconfigured
 	for _, d := range job.dev {
 		job.node.devices[d].busy = false
 	}
