@@ -47,11 +47,16 @@
 
 		mjolnir add file1.py
 		mjolnir add *.py
-		mjolnir add file1.py -pr 10 # changes priority of file1.py
+		mjolnir add file1.py -pr 10                   # changes priority of file1.py
+		mjolnir add file1.py -gpus 4                  # run on 4 GPUs
+		mjolnir add file1.py -exec /bin/my_executable # use custom executable
 
-	Files can be removed from the queue with
+	Files/jobs can be removed from the queue with
 		mjolnir rm file1.py
 	Removing a running file will kill the compute job.
+
+	Jobs can also be re-queued, this kills the job, removes the output directory and puts the job back in the queue.
+		mjolnir requeue file.py
 
 	Watch the queue status with:
 		mjolnir status
