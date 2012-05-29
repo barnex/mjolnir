@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func ParseFlag(args []string, flag string) (otherargs []string, value int, err error) {
+func ParseStringFlag(args []string, flag string) (otherargs []string, value string, err error) {
 
 	valuei := -1
 	for i, arg := range args {
@@ -15,11 +15,8 @@ func ParseFlag(args []string, flag string) (otherargs []string, value int, err e
 				err = errors.New(flag + "needs argument")
 				return
 			}
-			value, err = strconv.Atoi(args[i+1])
+			value = args[i+1]
 			valuei = i
-			if err != nil {
-				return
-			}
 			break
 		}
 	}
@@ -29,6 +26,16 @@ func ParseFlag(args []string, flag string) (otherargs []string, value int, err e
 	} else {
 		otherargs = args
 	}
+	return
+}
+
+func ParseIntFlag(args []string, flag string) (otherargs []string, value int, err error) {
+	str := ""
+	otherargs, str, err = ParseStringFlag(args, flag)
+	if err != nil {
+		return
+	}
+	value, err = strconv.Atoi(str)
 	return
 }
 

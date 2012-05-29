@@ -12,13 +12,13 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	Debug(usr.name, "add", args)
 
 	nice := 0
-	args, nice, err = ParseFlag(args, "-pr")
+	args, nice, err = ParseIntFlag(args, "-pr")
 	if err != nil {
 		return
 	}
 
 	gpus := 0
-	args, gpus, err = ParseFlag(args, "-gpus")
+	args, gpus, err = ParseIntFlag(args, "-gpus")
 	if gpus < 1 {
 		gpus = 1
 	}
