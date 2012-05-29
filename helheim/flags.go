@@ -35,7 +35,7 @@ func ParseIntFlag(args []string, flag string) (otherargs []string, value int, er
 	if err != nil {
 		return
 	}
-	if str != ""{
+	if str != "" {
 		value, err = strconv.Atoi(str)
 	}
 	return
