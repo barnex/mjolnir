@@ -26,6 +26,12 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 		return
 	}
 
+	exec := ""
+	args, exec, err = ParseStringFlag(args, "-exec")
+	if err != nil {
+		return
+	}
+
 	err = CheckNoMoreFlags(args)
 	if err != nil {
 		return
@@ -36,6 +42,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 		job := NewJob(usr, file)
 		job.priority = nice
 		job.gpus = gpus
+		job.exec = exec
 		usr.que.Push(job)
 	}
 

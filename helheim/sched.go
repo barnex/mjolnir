@@ -59,7 +59,11 @@ func Dispatch(job *Job, node *Node, dev []int) {
 		gpuflag = fmt.Sprint(gpuflag, ",", job.dev[i])
 	}
 
-	job.cmd = job.node.Cmd("", executable[0], append(executable[1:], gpuflag, job.file)...)
+	exec := executable[0]
+	if job.exec != "" {
+		exec = job.exec
+	}
+	job.cmd = job.node.Cmd("", exec, append(executable[1:], gpuflag, job.file)...)
 
 	// Actually run the job
 	go func() {

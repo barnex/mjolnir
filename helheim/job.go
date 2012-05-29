@@ -13,6 +13,7 @@ type Job struct {
 	gpus      int       // User-defined number of GPUs for the job
 	id        int       // Unique job id
 	index     int       // Index in the priority queue (internal use)
+	exec      string    // Executable, may be empty for default
 	file      string    // Mumax input file
 	user      *User     // User who owns job
 	node      *Node     // Node assigned to job, if any yet
@@ -43,7 +44,7 @@ func NewJob(user *User, file string) *Job {
 
 func (j *Job) String() string {
 	wall := j.Walltime()
-	str1 := fmt.Sprintf("%07d %-7s %02d %v %v", j.id, j.user, j.priority, formatDuration(wall), j.file)
+	str1 := fmt.Sprintf("%07d %-7s %02d %v %v %v", j.id, j.user, j.priority, formatDuration(wall), j.exec, j.file)
 	if j.gpus > 1 {
 		str1 += fmt.Sprint(" ", j.gpus, "GPUs ")
 	}
