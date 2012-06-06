@@ -50,6 +50,7 @@
 		mjolnir add file1.py -pr 10                   # changes priority of file1.py
 		mjolnir add file1.py -gpus 4                  # run on 4 GPUs
 		mjolnir add file1.py -exec /bin/my_executable # use custom executable
+		mjolnir add file1.py -wall 1h                 # set maximum walltime. default 24h.
 
 	Files/jobs can be removed from the queue with
 		mjolnir rm file1.py
