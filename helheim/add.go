@@ -4,6 +4,7 @@ import (
 	"io"
 	"os/user"
 	"strings"
+	"time"
 )
 
 // API func, adds job.
@@ -32,6 +33,17 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 		return
 	}
 
+	wall := ""
+	args, wall, err = ParseStringFlag(args, "-wall")
+	if err != nil {
+		return
+	}
+	var maxwall time.Duration
+	maxwall, err = time.ParseDuration(wall)
+	if err != nil {
+		return
+	}
+
 	err = CheckNoMoreFlags(args)
 	if err != nil {
 		return
@@ -43,6 +55,7 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 		job.priority = nice
 		job.gpus = gpus
 		job.exec = exec
+		job.maxWalltime = maxwall
 		usr.que.Push(job)
 	}
 

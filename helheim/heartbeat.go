@@ -9,7 +9,7 @@ const (
 	MINUTE                = 60 * SECOND
 	HOUR                  = 60 * MINUTE
 	HEARTBEAT             = 10 * SECOND
-	MAX_WALLTIME          = 24 * HOUR  // jobs get killed after running this long
+	DEFAULT_MAX_WALLTIME  = 24 * HOUR  // jobs get killed after running this long
 	MAIL_AGGREGATION_TIME = 1 * MINUTE // aggregate mail messages for this long
 )
 
@@ -30,7 +30,7 @@ func heartbeat() {
 // Kill jobs that have been running too long.
 func checkWalltime() {
 	for _, j := range running {
-		if j.Walltime() > MAX_WALLTIME {
+		if j.Walltime() > j.maxWalltime {
 			Debug("max walltime reached for ", j)
 			j.Kill()
 		}

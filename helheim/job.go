@@ -9,20 +9,21 @@ import (
 
 // Compute job.
 type Job struct {
-	priority  int       // User-defined job priority
-	gpus      int       // User-defined number of GPUs for the job
-	id        int       // Unique job id
-	index     int       // Index in the priority queue (internal use)
-	exec      string    // Executable, may be empty for default
-	file      string    // Mumax input file
-	user      *User     // User who owns job
-	node      *Node     // Node assigned to job, if any yet
-	dev       []int     // GPU device indices assigned to job, if any yet
-	err       error     // Error executing job, if any
-	cmd       *exec.Cmd // Command executing the job
-	startTime time.Time // Walltime when job was started
-	stopTime  time.Time // Walltime when job was stoped
-	requeue   bool
+	priority    int           // User-defined job priority
+	gpus        int           // User-defined number of GPUs for the job
+	id          int           // Unique job id
+	index       int           // Index in the priority queue (internal use)
+	exec        string        // Executable, may be empty for default
+	file        string        // Mumax input file
+	user        *User         // User who owns job
+	node        *Node         // Node assigned to job, if any yet
+	dev         []int         // GPU device indices assigned to job, if any yet
+	err         error         // Error executing job, if any
+	cmd         *exec.Cmd     // Command executing the job
+	startTime   time.Time     // Walltime when job was started
+	stopTime    time.Time     // Walltime when job was stoped
+	maxWalltime time.Duration // Maximum walltime for this job
+	requeue     bool
 }
 
 const DEFAULT_PRIORITY = 0
@@ -39,6 +40,7 @@ func NewJob(user *User, file string) *Job {
 	job.file = file
 	job.user = user
 	job.node = nil
+	job.maxWalltime = DEFAULT_MAX_WALLTIME
 	return job
 }
 
