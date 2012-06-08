@@ -38,10 +38,12 @@ func Add(out io.Writer, osUser *user.User, args []string) (err error) {
 	if err != nil {
 		return
 	}
-	var maxwall time.Duration
-	maxwall, err = time.ParseDuration(wall)
-	if err != nil {
-		return
+	var maxwall time.Duration = DEFAULT_MAX_WALLTIME
+	if wall != "" {
+		maxwall, err = time.ParseDuration(wall)
+		if err != nil {
+			return
+		}
 	}
 
 	err = CheckNoMoreFlags(args)
