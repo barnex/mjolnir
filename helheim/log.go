@@ -27,7 +27,8 @@ func logTemperature() {
 
 	var err error
 	if tempFile == nil {
-		tempFile, err = os.Create("temperature.log")
+		tempFile, err = os.OpenFile("temperature.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
+		fmt.Fprintln(tempFile, "# unix time (s)	device temp (C)")
 	}
 	Check(err)
 	now := time.Now()
@@ -49,7 +50,6 @@ func logTemperature() {
 				if strings.HasPrefix(l, "Gpu") && strings.HasSuffix(l, "C") {
 					l = l[26 : len(l)-2]
 					fmt.Fprint(tempFile, "\t", l)
-					//Debug(now.Unix(), l, "\t#", 
 				}
 			}
 		}
