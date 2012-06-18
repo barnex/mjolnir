@@ -58,4 +58,7 @@ func initMidgard() {
 
 	midgard.Api["requeue"] = Requeue
 	midgard.Help["requeue"] = "Kill a job and re-queue it for later"
+
+	midgard.Api["please"] = Please
+	midgard.Help["please"] = "Be polite to mjolnir"
 }
