@@ -25,6 +25,7 @@ func RunHeartbeat() {
 func heartbeat() {
 	checkWalltime()
 	checkMail()
+	checkLog()
 }
 
 // Kill jobs that have been running too long.
