@@ -7,7 +7,6 @@ import (
 )
 
 func ParseStringFlag(args []string, flag string) (otherargs []string, value string, err error) {
-
 	valuei := -1
 	for i, arg := range args {
 		if strings.HasPrefix(arg, flag) {

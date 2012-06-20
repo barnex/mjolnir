@@ -29,6 +29,13 @@ func logTemperature() {
 	if tempFile == nil {
 		tempFile, err = os.OpenFile("temperature.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 		fmt.Fprintln(tempFile, "# unix time (s)	device temp (C)")
+		fmt.Fprint(tempFile, "#")
+		for _, n := range nodes {
+			for d := range n.devices {
+				fmt.Fprint(tempFile, n.name,":",d,"\t")
+			}
+		}
+		fmt.Fprintln(tempFile)
 	}
 	Check(err)
 	now := time.Now()
