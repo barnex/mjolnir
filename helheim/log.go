@@ -11,8 +11,8 @@ var logcount int
 
 func checkLog() {
 	logcount++
-	// every six heartbeats will be every minute.
-	if logcount == 6 {
+	// ever x heartbeats
+	if logcount == 2 {
 		logcount = 0
 	} else {
 		return
@@ -36,6 +36,7 @@ func logTemperature() {
 			}
 		}
 		fmt.Fprintln(tempFile)
+		fmt.Fprintln(tempFile) // newline interrupts gnuplot trace.
 	}
 	Check(err)
 	now := time.Now()
