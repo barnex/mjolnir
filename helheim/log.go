@@ -12,7 +12,7 @@ var logcount int
 func checkLog() {
 	logcount++
 	// ever x heartbeats
-	if logcount == 2 {
+	if logcount == 12 {
 		logcount = 0
 	} else {
 		return

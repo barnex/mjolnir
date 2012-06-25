@@ -122,14 +122,15 @@ func Undispatch(job *Job) {
 
 }
 
-func requeue(job *Job) {
-	var zero time.Time
-	job.requeue = false
-	job.startTime = zero
-	job.stopTime = zero
-	job.node = nil
-	job.dev = nil
-	job.user.que.Push(job)
+func requeue(old *Job) {
+	nw := NewJob(old.user, old.file)
+	nw.exec = old.exec
+	nw.cmd = old.cmd
+	nw.gpus = old.gpus
+	nw.id = old.id
+	nw.maxWalltime = old.maxWalltime
+	nw.priority = old.priority
+	old.user.que.Push(nw)
 }
 
 // Reports if the job exit status signals a problem with the node itself.
